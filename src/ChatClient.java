@@ -14,14 +14,14 @@ public class ChatClient {
 			}
 			System.out.println("Connecting to remote object ...");
 			Chat c = (Chat) Naming.lookup( "rmi://"+args[0]+"/ChatService");
-			System.out.println("Chat Server "+c.name()+" answering:");
+			System.out.println("Connected to Chat Server: "+c.name());
 			
 			while(true){
 				Scanner in = new Scanner(System.in);
 				String msg = in.nextLine();
 				if(msg.equals("sair")){
 					System.out.println("Parando a execucao");
-					System.exit(1);
+					System.exit(0);
 				}else c.send(msg);
 				
 				//System.out.println( c.add(4, 5) );
