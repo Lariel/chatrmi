@@ -1,5 +1,7 @@
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 
 /**
 Objeto remoto implementa a interface Chat.
@@ -7,7 +9,7 @@ Este é o arquivo que deve ser usado pelo rmic, para a geração dos stubs
  **/
 
 
-public class ChatImpl extends java.rmi.server.UnicastRemoteObject implements Chat {
+public class ChatImpl extends java.rmi.server.UnicastRemoteObject implements Chat{
 	String myName, msg;
 
 	public ChatImpl() throws java.rmi.RemoteException {
@@ -28,7 +30,12 @@ public class ChatImpl extends java.rmi.server.UnicastRemoteObject implements Cha
 	public void send(String msg) throws java.rmi.RemoteException {
 		this.msg=msg;
 		forward(msg);
-		System.out.println(msg);
+		try {
+			System.out.println(RemoteServer.getClientHost()+": "+msg);
+		} catch (ServerNotActiveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//return msg;
 		
 	}
