@@ -16,6 +16,10 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	public void receberMensagem(String mensagem) throws RemoteException {
 		System.out.println(mensagem);
 	}
+	
+	public String getNome() throws RemoteException{
+		return nome;
+	}
 
 	@Override
 	public void run() {
@@ -23,11 +27,22 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 		String mensagem;
 		while(true) {
 			mensagem=sc.nextLine();
-			try {
-				servidor.enviarMensagem(nome+": "+mensagem);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(mensagem.equals("sair")) {
+				System.out.println("Parando execucao");
+				try {
+					servidor.enviarMensagem(nome + " saiu do chat");
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.exit(0);
+			}else {
+				try {
+					servidor.enviarMensagem(" "+nome+": "+mensagem);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

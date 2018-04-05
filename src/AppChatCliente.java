@@ -11,5 +11,3 @@ public class AppChatCliente {
 		new Thread(new ChatCliente(args[1],servidor)).start();
 	}
 }
-
-//Naming.lookup( "rmi://"+args[0]+"/ChatService");
