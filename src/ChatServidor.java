@@ -7,11 +7,11 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private ArrayList<IChatCliente>listaClientes;
 	
 	protected ChatServidor() throws RemoteException {
-		listaClientes=new ArrayList<IChatCliente>();
 		System.out.println("Servidor aceitando conexões...");
 	}
 
 	public void registrarClienteChat(IChatCliente cliente) throws RemoteException {
+		listaClientes=new ArrayList<IChatCliente>();
 		this.listaClientes.add(cliente);
 		System.out.println(cliente.getNome() + " se conectou ao servidor");
 	}
@@ -22,5 +22,30 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 			listaClientes.get(i++).receberMensagem(mensagem);
 		}
 		System.out.println(mensagem);
+	}
+
+	@Override
+	public void addContato(IChatCliente cliente) throws RemoteException {
+		this.listaClientes.add(cliente);
+	}
+
+	@Override
+	public void armazenaEnviada() throws RemoteException {
+		
+	}
+
+	@Override
+	public void armazenaRecebida() throws RemoteException {
+		
+	}
+
+	@Override
+	public void criaGrupo(String nomeGrupo) throws RemoteException {
+		
+	}
+
+	@Override
+	public void addContatoGrupo(IChatCliente cliente) throws RemoteException {
+		
 	}
 }
