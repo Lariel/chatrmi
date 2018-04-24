@@ -1,5 +1,11 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Runnable{
@@ -38,7 +44,15 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 				System.exit(0);
 			}else {
 				try {
-					servidor.enviarMensagem(" "+nome+": "+mensagem);
+					
+					LocalDateTime agora = LocalDateTime.now();
+					DateTimeFormatter formatador = DateTimeFormatter
+					  .ofLocalizedDateTime(FormatStyle.SHORT)
+					  .withLocale(new Locale("pt", "br"));
+					agora.format(formatador); //24/04/18 18:02
+					
+															
+					servidor.enviarMensagem(" "+agora+" "+nome+": "+mensagem);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
