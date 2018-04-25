@@ -2,9 +2,10 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 
 public class AppChatCliente {
-	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException, ServerNotActiveException {
 		//String URLChatServidor="rmi://"+args[0]+"/ServidorChatRMI";
 		//IChatServidor servidor = (IChatServidor) Naming.lookup(URLChatServidor);
 		if(args.length < 2) {

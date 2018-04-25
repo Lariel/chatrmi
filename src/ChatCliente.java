@@ -1,11 +1,6 @@
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Runnable{
@@ -13,14 +8,18 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	private IChatServidor servidor;
 	private String nome=null;
 	
-	protected ChatCliente(String nome, IChatServidor servidor) throws RemoteException {
+	protected ChatCliente(String nome, IChatServidor servidor) throws RemoteException, ServerNotActiveException {
 		this.nome=nome;
 		this.servidor=servidor;
 		servidor.registrarClienteChat(this); //me registrei no servidor
 	}
 
-	public void receberMensagem(String mensagem) throws RemoteException {
-		System.out.println(mensagem);
+	public void receberMensagem(String texto) throws RemoteException {
+		System.out.println(texto);
+	}
+	
+	public void receberMensagem(Mensagem m) throws RemoteException {
+		System.out.println(m.getTexto());
 	}
 	
 	public String getNome() throws RemoteException{
@@ -44,15 +43,8 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 				System.exit(0);
 			}else {
 				try {
-					
-					LocalDateTime agora = LocalDateTime.now();
-					DateTimeFormatter formatador = DateTimeFormatter
-					  .ofLocalizedDateTime(FormatStyle.SHORT)
-					  .withLocale(new Locale("pt", "br"));
-					agora.format(formatador); //24/04/18 18:02
-					
-															
-					servidor.enviarMensagem(" "+agora+" "+nome+": "+mensagem);
+					Mensagem m=new Mensagem(this.nome, mensagem);
+					servidor.enviarMensagem(m);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

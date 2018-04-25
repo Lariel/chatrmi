@@ -1,8 +1,9 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 
 public interface IChatServidor extends Remote{
-	public void registrarClienteChat(IChatCliente cliente) throws RemoteException;
+	public void registrarClienteChat(IChatCliente cliente) throws RemoteException, ServerNotActiveException;
 	//ao registrar o cliente, o servidor cria uma lista para salvar seus contatos
 
 	//requisitos
@@ -11,7 +12,8 @@ public interface IChatServidor extends Remote{
 	//add contato na lista previamente criada
 
 	// 2
-	public void enviarMensagem(String mensagem) throws RemoteException;
+	public void enviarMensagem(Mensagem m) throws RemoteException;
+	public void enviarMensagem(String texto) throws RemoteException;
 
 	// 3.1
 	public void armazenaEnviada() throws RemoteException;
