@@ -8,10 +8,11 @@ public interface IChatServidor extends Remote{
 
 	//requisitos
 	// 1
-	public void addContato(IChatCliente cliente) throws RemoteException;
+	public boolean addContato(String nome) throws RemoteException;
 	//add contato na lista previamente criada
 
 	// 2
+	public void enviarMensagem(Mensagem m, String destinatario) throws RemoteException;
 	public void enviarMensagem(Mensagem m) throws RemoteException;
 	public void enviarMensagem(String texto) throws RemoteException;
 
@@ -29,6 +30,9 @@ public interface IChatServidor extends Remote{
 
 	public void addContatoGrupo(IChatCliente cliente) throws RemoteException;
 	//add se for contato, testar se está na lista de contatos
-
+	
+	//Apoio
+	public String listaTodos() throws RemoteException;
+	public boolean eContato(String nome) throws RemoteException;
 
 }

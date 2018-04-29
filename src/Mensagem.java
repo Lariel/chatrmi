@@ -1,33 +1,30 @@
 import java.util.*;
+import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.text.*;
 
-public class Mensagem extends UnicastRemoteObject implements IMensagem{
-	
-	/**
-	 * 
-	 */
+public class Mensagem implements Serializable{
+	//extends UnicastRemoteObject implements IMensagem
 	private static final long serialVersionUID = 1L;
-	private String ipRemetente;
+	private String nomeRemetente;
 	private String texto;
 	private String instante;
 	
-	public Mensagem(String ipRemetente, String texto) throws RemoteException {
+	public Mensagem(String nomeRemetente, String texto) throws RemoteException {
 		
 		Date dt = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		this.instante = (dateFormat.format(dt));
-		this.ipRemetente = ipRemetente;
+		this.nomeRemetente = nomeRemetente;
 		this.texto = texto;
 	}
 
-	public String getIpRemetente() throws RemoteException {
-		return ipRemetente;
+	public String getNomeRemetente() throws RemoteException {
+		return nomeRemetente;
 	}
 
-	public void setIpRemetente(String ipRemetente) throws RemoteException {
-		this.ipRemetente = ipRemetente;
+	public void setNomeRemetente(String nomeRemetente) throws RemoteException {
+		this.nomeRemetente = nomeRemetente;
 	}
 
 	public String getTexto() throws RemoteException{
