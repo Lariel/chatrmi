@@ -6,7 +6,7 @@ Criar .java.policy com o seguinte conteúdo e salvar na /home (linux):
 
 > grant {
 >
->	permission java.security.AllPermission;
+	>	permission java.security.AllPermission;
 >
 > };
 
