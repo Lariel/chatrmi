@@ -20,7 +20,7 @@ Criar .java.policy com o seguinte conteúdo e salvar na /home (linux):
   
 ###### Executar em terminais distindos
 
-    java AppChatServidor <*SEU_IP*>
+    java AppChatServidor *SEU_IP*
     java AppChatCliente <*IP DO SERVIDOR*> <*SEU NOME*>
 
   
