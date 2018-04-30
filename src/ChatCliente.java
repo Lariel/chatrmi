@@ -71,7 +71,6 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 						}else System.out.println("Contato não disponivel para add :/ \n"); //se não é contato mas também não está registrado no sistema (lista todos)
 					}
 				} catch (RemoteException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 			break;
