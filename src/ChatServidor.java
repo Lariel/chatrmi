@@ -10,11 +10,13 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<IChatCliente>todos;
 	private ArrayList<IChatCliente>contatos;
+	private ArrayList<IChatCliente>grupo;
 	private String clienteIP=null;
 	
 	protected ChatServidor() throws RemoteException {
 		todos=new ArrayList<IChatCliente>();
 		contatos=new ArrayList<IChatCliente>();
+		grupo=new ArrayList<IChatCliente>();
 		System.out.println("Servidor aceitando conexões...");
 	}
 
@@ -28,7 +30,7 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		System.out.println(clienteIP + " - " + cliente.getNome()+" se conectou ao servidor\n");
 	}
 	
-	public void enviarMensagem(String texto) throws RemoteException {
+	public void enviarMensagem(String texto) throws RemoteException { //remover método
 		int i=0;
 		while(i<todos.size()) {
 			todos.get(i++).receberMensagem(texto);
@@ -36,22 +38,29 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		System.out.println(texto);
 	}
 
-	public void enviarMensagem(Mensagem m, String destinatario) throws RemoteException {
+	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException {  //enviar para um destinatário específico
 		for(int i=0;i<contatos.size();i++) {
 			if(contatos.get(i).getNome().equals(destinatario)){
-				contatos.get(i).receberMensagem(m);
+				if(contatos.get(i).getStatus()==true) {
+					contatos.get(i).receberMensagem(m);
+					
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 	
-
 	@Override
-	public void enviarMensagem(Mensagem m) throws RemoteException {
+	public boolean enviarMensagem(Mensagem m) throws RemoteException { //enviar para um grupo
 		int i=0;
-		while(i<todos.size()) {
-			todos.get(i++).receberMensagem(m);
+		while(i<grupo.size()) {
+			if(grupo.get(i).getStatus()==true) {
+				grupo.get(i++).receberMensagem(m);
+				return true;
+			}
 		}
-		
+		return false;
 	}
 	
 

@@ -5,6 +5,9 @@ import java.text.*;
 
 public class Mensagem implements Serializable{
 	//extends UnicastRemoteObject implements IMensagem
+	
+	
+	
 	private static final long serialVersionUID = 1L;
 	private String nomeRemetente;
 	private String texto;
