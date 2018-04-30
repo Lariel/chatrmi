@@ -15,19 +15,19 @@ Criar .java.policy com o seguinte conteúdo e salvar na /home (linux):
   
 
 ###### Ativar o rmiregistry
-	rmiregistry &   //ativa e retorna o PID
+	rmiregistry &   *ativa e retorna o PID*
   
   
 ###### Executar em terminais distindos
 
-    java AppChatServidor <SEU_IP>
-    java AppChatCliente <IP DO SERVIDOR> <SEU NOME>
+    java AppChatServidor <*SEU_IP*>
+    java AppChatCliente <*IP DO SERVIDOR*> <*SEU NOME*>
 
   
 ###### Parar o rmiregistry:
 
-	lsof -i:<porta_exception>  //retorna PID
-	kill <PID>
+	lsof -i:<*porta_exception*>  //*retorna PID*
+	kill <*PID*>
 
 ###### Para saber o número IP da máquina:
 
