@@ -10,12 +10,12 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<IChatCliente>registradosNoServidor;
 	private ArrayList<IChatCliente>contatos;
-	private ArrayList<IChatCliente>grupo;
+	private ArrayList<IHistoricoMensagens>historico;
 		
 	protected ChatServidor() throws RemoteException {
 		registradosNoServidor=new ArrayList<IChatCliente>();
 		contatos=new ArrayList<IChatCliente>();
-		grupo=new ArrayList<IChatCliente>();
+		historico=new ArrayList<IHistoricoMensagens>();
 		System.out.println("Servidor aceitando conexões...");
 	}
 
@@ -29,7 +29,6 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		System.out.println(cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor\n");
 	}
 
-	@Override
 	public String addContato(String nome) throws RemoteException {
 		if(estaRegistradoNoServidor(nome)!=-1){ //segue adiante se estiver registrado no servidor
 			if(eContato(nome)==-1){ //segue adiante apenas se o nome (ou IP quando eu quiser alterar) NÃO for um contato
@@ -39,18 +38,12 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 			}return "Contato já faz parte de sua lista";
 		}return "Usuário não registrado no servidor";
 	}
-	
-	public void enviarMensagem(String texto) throws RemoteException { //remover método
-		int i=0;
-		while(i<registradosNoServidor.size()) {
-			registradosNoServidor.get(i++).receberMensagem(texto);
-		}
-		System.out.println(texto);
-	}
 
 	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException {  //enviar para um destinatário específico
 		if(eContato(destinatario)!=-1){
 			contatos.get(eContato(destinatario)).receberMensagem(m);
+			//historico.addHistorico(m,destinatario);
+			//implementar funcionalidade de historico
 			//implementar funcionalidade de mensagem lida
 			return true;
 		}
@@ -58,14 +51,9 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	}
 	
 	public boolean enviarMensagem(Mensagem m) throws RemoteException { //enviar para um grupo
-		//rever este metodo
-		int i=0;
-		while(i<grupo.size()) {
-			if(grupo.get(i).getStatus()==true) {
-				grupo.get(i++).receberMensagem(m);
-				return true;
-			}
-		}
+		//@TODO
+		
+		
 		return false;
 	}
 	

@@ -14,8 +14,7 @@ public interface IChatServidor extends Remote{
 	// 2
 	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException;
 	public boolean enviarMensagem(Mensagem m) throws RemoteException;
-	public void enviarMensagem(String texto) throws RemoteException;
-
+	
 	// 3.1
 	public void armazenaEnviada() throws RemoteException;
 
