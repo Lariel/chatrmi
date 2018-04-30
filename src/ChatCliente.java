@@ -88,7 +88,7 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 				try {
 					if(servidor.eContato(comandos[2])==true) {
 						destinatario=comandos[2];
-						mensagem=comandos[3];
+						mensagem=texto.substring(texto.indexOf(comandos[3]));
 						System.out.println("----- Conversa com "+destinatario+" -----\n");
 						Mensagem m=new Mensagem(this.nome, mensagem); //obj Mensagem recebe o nome do remetente e uma String com a mensagem
 						if(servidor.enviarMensagem(m, destinatario)==false) { //método enviarMensagem recebendo a mensagem e o destinatário
