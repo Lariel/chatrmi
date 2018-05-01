@@ -1,3 +1,6 @@
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
@@ -17,17 +20,14 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 		this.onLine=true;
 		servidor.registrarClienteChat(this); //me registrei no servidor
 	}
-
-	public void receberMensagem(String texto) throws RemoteException {  //remover m√©todo
-		System.out.println(texto);
-	}
 	
-	public void receberMensagem(Mensagem m) throws RemoteException {
+	public boolean receberMensagem(Mensagem m) throws RemoteException {
 		System.out.println(
 				m.getNomeRemetente()+" - "+
 				m.getInstante()+":\n"+
 				m.getTexto()
 				);
+		return true;
 	}
 	
 	public String getNome() throws RemoteException{
@@ -47,14 +47,14 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 		Scanner sc = new Scanner(System.in);
 		String op="";
 		String mensagem, texto, destinatario;
-		System.out.println("----- Bem vindo "+nome +", comandos dispon√≠veis:\n"
+		System.out.println("----- Bem vindo "+nome +", comandos disponÌveis:\n"
 					+"# i <nome> <ip> - Insere o <ip> com o <nome> na lista de contatos. \n"
 					+"# g <nome> <lista-nomes> - Insere o <nome> na lista de grupos. Insere <lista-nomes> como membros do grupo.\n"
 					+"# l <nome> - Lista as mensagens enviadas e recebidas para um contato ou grupo\n"
 					+"# s <nome> <msg> - Envia uma mensagem <msg> para o <nome>\n"
 					+"# c - Lista todos os contatos e grupos.\n"
 					+"# e - Sair do chat\n"
-					+"# h - Ver esta lista sempre que necess√°rio\n"
+					+"# h - Ver esta lista sempre que necess·rio\n"
 					);
 		while(onLine) {
 			texto=sc.nextLine();
@@ -69,6 +69,9 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 					System.out.println(servidor.addContato(contato));
 				} catch (RemoteException e2) {
 					e2.printStackTrace();
+				} catch (ServerNotActiveException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			break;
 			
@@ -85,8 +88,8 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 				mensagem=texto.substring(texto.indexOf(comandos[3]));
 				try {
 					Mensagem m=new Mensagem(this.nome, mensagem); //obj Mensagem recebe o nome do remetente e uma String com a mensagem
-					servidor.enviarMensagem(m, destinatario); //m√©todo enviarMensagem recebendo a mensagem e o destinat√°rio
-				} catch (RemoteException e3){
+					servidor.enviarMensagem(m, destinatario); //mÈtodo enviarMensagem recebendo a mensagem e o destinat·rio
+				} catch (RemoteException | ServerNotActiveException e3){
 					e3.printStackTrace();
 				}
 			break;
@@ -98,31 +101,35 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (ServerNotActiveException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				System.out.println("\n----- Lista de grupos -----\n");
 			break;
 			
 			case "e":
-				System.out.println("Encerrando execu√ß√£o");
+				System.out.println("Encerrando execuÁ„o");
 				onLine=false;
+				
 				//System.exit(0);
 			break;
 				
 			case "h":
-					System.out.println("----- Comandos dispon√≠veis -----\n"
+					System.out.println("----- Comandos disponÌveis -----\n"
 							+"# i <nome> <ip> - Insere o <ip> com o <nome> na lista de contatos.\n"
 							+"# g <nome> <lista-nomes> - Insere o <nome> na lista de grupos. Insere <lista-nomes> como membros do grupo.\n"
 							+"# l <nome> - Lista as mensagens enviadas e recebidas para um contato ou grupo\n" 
 							+"# s <nome> <msg> - Envia uma mensagem <msg> para o <nome>\n" 
 							+"# c - Lista todos os contatos e grupos.\n"
 							+"# e - Sair do chat\n" 
-							+"# h - Ver esta lista sempre que necess√°rio\n" 
+							+"# h - Ver esta lista sempre que necess·rio\n" 
 							);
 
 			break;
 			
 			default: 
-				System.out.println("Informe uma op√ß√£o v√°lida!\n");
+				System.out.println("Informe uma opÁ„o v·lida!\n");
 			break;
 			}		
 		}

@@ -8,50 +8,49 @@ import java.util.Date;
 
 public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private static final long serialVersionUID = 1L;
-	private ArrayList<IChatCliente>registradosNoServidor;
-	private ArrayList<IChatCliente>contatos;
-	private ArrayList<IHistoricoMensagens>historico;
+	private ArrayList<IChatCliente>registradosNoServidor; // lista compartilhada com todos conectados no servidor
+	//private ArrayList<IChatCliente>contatos;
+	private IAgendaContatos contatos;
+	private IHistoricoMensagens historico;
 		
-	protected ChatServidor() throws RemoteException {
+	public ChatServidor() throws RemoteException {
 		registradosNoServidor=new ArrayList<IChatCliente>();
-		contatos=new ArrayList<IChatCliente>();
-		historico=new ArrayList<IHistoricoMensagens>();
-		System.out.println("Servidor aceitando conex√µes...");
+		//contatos=new ArrayList<IChatCliente>();
+		historico=new HistoricoMensagens();
+		System.out.println("Servidor aceitando conexıes");
 	}
 
+	// recebe obj IChatCliente cliente do construtor da classe ChatCliente
 	public void registrarClienteChat(IChatCliente cliente) throws RemoteException, ServerNotActiveException {
 		Date dt = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		String instante = (dateFormat.format(dt));
 		this.registradosNoServidor.add(cliente);
 		//clienteIP=RemoteServer.getClientHost();
+		contatos=new AgendaContatos(cliente.getNome(), cliente.getIP()); // cria uma nova agenda de constatos para este cliente
 		System.out.println("---------- "+instante+" ----------");
 		System.out.println(cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor\n");
 	}
 
-	public String addContato(String nome) throws RemoteException {
-		if(estaRegistradoNoServidor(nome)!=-1){ //segue adiante se estiver registrado no servidor
-			if(eContato(nome)==-1){ //segue adiante apenas se o nome (ou IP quando eu quiser alterar) N√ÉO for um contato
-				int i = estaRegistradoNoServidor(nome);
-				this.contatos.add(registradosNoServidor.get(i));
-				return "Contato adicionado com sucesso!";
-			}return "Contato j√° faz parte de sua lista";
-		}return "Usu√°rio n√£o registrado no servidor";
-	}
-
-	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException {  //enviar para um destinat√°rio espec√≠fico
-		if(eContato(destinatario)!=-1){
-			contatos.get(eContato(destinatario)).receberMensagem(m);
-			//historico.addHistorico(m,destinatario);
-			//implementar funcionalidade de historico
-			//implementar funcionalidade de mensagem lida
-			return true;
-		}
-		return false;
+	
+	public String addContato(String nome) throws RemoteException, ServerNotActiveException {
+		if(estaRegistradoNoServidor(nome)!=-1){ //segue adiante sÛ se estiver registrado no servidor
+			return contatos.addContato(
+					registradosNoServidor.get(
+							estaRegistradoNoServidor(nome)),
+							RemoteServer.getClientHost());
+		}return "Usu·rio n„o registrado no servidor";
 	}
 	
-	public boolean enviarMensagem(Mensagem m) throws RemoteException { //enviar para um grupo
-		//@TODO
+	// enviar mensagem para um contato especifico
+	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException, ServerNotActiveException {
+		historico.addHistorico(m, destinatario);
+		return contatos.buscaPorNome(destinatario,RemoteServer.getClientHost()).receberMensagem(m);
+	}
+	
+	 //enviar para um grupo
+	public boolean enviarMensagem(Mensagem m) throws RemoteException {
+		//TODO
 		
 		
 		return false;
@@ -73,35 +72,32 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		
 	}
 
-	public String listaContatos() throws RemoteException {
-		String lista="";
-		for(int i=0; i<contatos.size();i++) {
-			lista=lista+contatos.get(i).getNome()+"\n";
-		}
-		return lista;
+	public String listaContatos() throws RemoteException, ServerNotActiveException{
+		return contatos.listaTodos(RemoteServer.getClientHost());
 	}
 
-	//retorna posi√ß√£o na lista ou -1 caso n√£o esteja registrado no servidor
+	//retorna posiÁ„o na lista ou -1 caso n„o esteja registrado no servidor
 	public int estaRegistradoNoServidor(String nome) throws RemoteException {
-		//Para validar por IP alterar este m√©todo
 		for(int i=0;i<registradosNoServidor.size();i++) {
 			if(nome.equals(registradosNoServidor.get(i).getNome())) {
-				return i; // j√° esta registrado, retorna a posi√ß√£o
+				return i; // j· esta registrado, retorna a posiÁ„o
 			}
 		}
-		return -1; //retorna -1 quando n√£o est√° registrado
+		return -1; //retorna -1 quando n„o est· registrado
 	}
-
-	//retorna posi√ß√£o na lista ou -1 caso n√£o seja contato
-	public int eContato(String nome) throws RemoteException {
-		//Para validar por IP alterar este m√©todo
-		for(int i=0;i<contatos.size();i++) {
-			if(nome.equals(contatos.get(i).getNome())) {
-				return i; // j√° √© contato, retorna a posi√ß√£o
-			}
+	
+	//retorna posiÁ„o na lista ou -1 caso n„o esteja registrado no servidor
+	public int estaRegistradoNoServidor(String nome, String IP) throws RemoteException {
+		for(int i=0;i<registradosNoServidor.size();i++) {
+			if(nome.equals(registradosNoServidor.get(i).getNome())
+					&&
+			(IP.equals(registradosNoServidor.get(i).getIP()))
+				) {
+					return i; // j· esta registrado, retorna a posiÁ„o
+				}
 		}
-		return -1; //retorna -1 quando n√£o √© contato
+		return -1; //retorna -1 quando n„o est· registrado
 	}
-
+	
 	
 }
