@@ -16,7 +16,7 @@ public class HistoricoMensagens extends UnicastRemoteObject implements IHistoric
 		historico = new HashMap<String,ArrayList<Mensagem>>();
 	}
 
-	public void addHistorico(Mensagem m, String destinatario) throws RemoteException {
+	public void addHistorico(String destinatario, Mensagem m) throws RemoteException {
 		this.destinatario=destinatario;
 		ArrayList<Mensagem>auxMensagens=historico.get(destinatario);
 		if(auxMensagens==null) {
@@ -27,17 +27,19 @@ public class HistoricoMensagens extends UnicastRemoteObject implements IHistoric
 			if(!auxMensagens.contains(destinatario)) {
 				auxMensagens.add(m);
 			}
-		}
-		
+		}	
 	}
 
 	public String devolveHistorico(String destinatario) throws RemoteException {
-		String historicoMensagens="";
-		ArrayList<Mensagem>auxMensagens=historico.get(destinatario);
-		for(int i=0;i<auxMensagens.size();i++) {
-			historicoMensagens=historicoMensagens+auxMensagens.get(i).getTexto()+"\n";
+		String historicoMensagens="------ Conversa com "+destinatario+" ------\n";
+		if(historico.containsKey(destinatario)) { //testa primeiro se existe alguma conversa com este usuario
+			ArrayList<Mensagem>auxMensagens=historico.get(destinatario);
+			for(int i=0;i<auxMensagens.size();i++) {
+				historicoMensagens=historicoMensagens+"> "+auxMensagens.get(i).getHora()+" - "+auxMensagens.get(i).getNomeRemetente()+": "+auxMensagens.get(i).getTexto()+"\n";
+			}
+			return historicoMensagens;
+		}else {
+			return "------ Sem conversas com "+destinatario+" ------\n";
 		}
-		return historicoMensagens;
 	}
-
 }

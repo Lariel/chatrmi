@@ -1,42 +1,54 @@
 import java.util.*;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.text.*;
 
 public class Mensagem implements Serializable{
 	//extends UnicastRemoteObject implements IMensagem, Serializable
 	
 	private static final long serialVersionUID = 1L;
-	private String nomeRemetente;
+	private IChatCliente remetente;
 	private String texto;
-	private String instante;
+	private String instante, hora, data;
+	private Boolean lida=false;
 	
-	public Mensagem(String nomeRemetente, String texto) {
-		
+	public Mensagem(IChatCliente remetente, String texto) {
 		Date dt = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		
 		this.instante = (dateFormat.format(dt));
-		this.nomeRemetente = nomeRemetente;
+		this.hora = instante.substring(11);
+		this.remetente = remetente;
 		this.texto = texto;
 	}
 
-	public String getNomeRemetente() {
-		return nomeRemetente;
+	public String getNomeRemetente() throws RemoteException {
+		return remetente.getNome();
 	}
-
-	public void setNomeRemetente(String nomeRemetente) {
-		this.nomeRemetente = nomeRemetente;
+	
+	public String getIpRemetente() throws RemoteException {
+		return remetente.getIP();
 	}
 
 	public String getTexto() {
 		return texto;
 	}
 
-	public void setTexto(String texto) {
-		this.texto = texto;
-	}
-
 	public String getInstante() {
 		return instante;
 	}	
+	
+	public String getHora() {
+		return hora;
+	}
+	
+	public Boolean setLida() {
+		lida=true;
+		return lida;
+	}
+	
+	public Boolean getLida() {
+		return lida;
+	}
 	
 }

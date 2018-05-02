@@ -1,7 +1,9 @@
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 
 public interface IGrupo {
-	public void addGrupo(String nGrupo, ArrayList<IChatCliente> membros)throws RemoteException;
-	public String devolveGrupo()throws RemoteException;
+	public String getNomeGrupo()throws RemoteException;
+	public boolean eComponente(IChatCliente contato) throws RemoteException;
+	public ArrayList<IChatCliente> getListaComponentes() throws RemoteException;
 }

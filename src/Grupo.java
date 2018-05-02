@@ -1,28 +1,32 @@
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Grupo implements IGrupo{
-	private String nGrupo;
-	private ArrayList<IChatCliente>grupo;
+	private String nomeGrupo;
+	private ArrayList<IChatCliente>listaComponentes;
 	
+	public Grupo(String nomeGrupo, ArrayList<IChatCliente> listaComponentes) {
+		this.nomeGrupo = nomeGrupo;
+		this.listaComponentes=new ArrayList<IChatCliente>();
+		this.listaComponentes=listaComponentes;
+	}
 	
-
-	public Grupo(String nGrupo, ArrayList<IChatCliente> grupo) {
-		super();
-		this.nGrupo = nGrupo;
-		this.grupo = grupo;
+	public String getNomeGrupo() {
+		return nomeGrupo;
 	}
-
-	@Override
-	public void addGrupo(String nGrupo, ArrayList<IChatCliente> membros) throws RemoteException{
-		// TODO Auto-generated method stub
-		
+	
+	public boolean eComponente(IChatCliente contato) throws RemoteException {
+		for(int i=0;i<listaComponentes.size();i++) {
+			if(contato.getNome().equals(listaComponentes.get(i).getNome())) {
+				return true;
+			}
+		}
+		return false;
 	}
-
-	@Override
-	public String devolveGrupo() throws RemoteException{
-		// TODO Auto-generated method stub
-		return null;
+	
+	public ArrayList<IChatCliente> getListaComponentes() throws RemoteException{
+		return listaComponentes;
 	}
-
 }

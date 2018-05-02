@@ -2,6 +2,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface IHistoricoMensagens  extends Remote{
-	public void addHistorico(Mensagem m, String destinatario) throws RemoteException;
+	public void addHistorico(String destinatario, Mensagem m) throws RemoteException;
 	public String devolveHistorico(String destinatario) throws RemoteException;
 }
