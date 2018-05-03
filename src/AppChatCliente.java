@@ -6,8 +6,6 @@ import java.rmi.server.ServerNotActiveException;
 
 public class AppChatCliente {
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException, ServerNotActiveException {
-		//String URLChatServidor="rmi://"+args[0]+"/ServidorChatRMI";
-		//IChatServidor servidor = (IChatServidor) Naming.lookup(URLChatServidor);
 		if(args.length != 3) {
 			System.err.println("Use java AppChatServidor <IP do Servidor> <Seu Nome> <Seu IP>");
             System.exit(1);
