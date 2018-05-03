@@ -110,7 +110,7 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		
 		if(rejeitados.equals("")){
 			return "Grupo "+nomeGrupo+" criado com sucesso! \n";
-		}else return "Grupo "+nomeGrupo+" criado com sucesso! \n Os seguintes usuários não são contatos, e não foram adicionados: \n"+rejeitados+"\n";
+		}else return "Grupo "+nomeGrupo+" criado com sucesso! \n Os seguintes usuários não são contatos, e não foram adicionados: \n  "+rejeitados+"\n  ";
 	}
 	
 	public String listaContatosEGrupos(IChatCliente cliente) throws RemoteException, ServerNotActiveException{
