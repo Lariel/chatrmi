@@ -15,11 +15,9 @@ public class AgendaContatos implements IAgendaContatos{
 		this.ipProprietario=proprietario.getIP();
 		this.nomeProprietario = proprietario.getNome();
 		listaContatos = new ArrayList<IChatCliente>();
+		listaContatos.add(proprietario);
 		contatos = new HashMap<String, ArrayList<IChatCliente>>();
 		contatos.put(ipProprietario, listaContatos);
-		
-		//me registrei na agenda
-		addContato(proprietario, ipProprietario);
 	}
 
 	//testa se o contato do parametro esta na minha agenda (key ipProprietario), se nao estiver, add ele

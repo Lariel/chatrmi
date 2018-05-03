@@ -5,25 +5,11 @@ import java.util.ArrayList;
 
 public interface IChatServidor extends Remote{
 	public void registrarClienteChat(IChatCliente cliente) throws RemoteException, ServerNotActiveException;
-	//ao registrar o cliente, o servidor cria uma lista para salvar seus contatos
-
-	//requisitos
-	// 1
 	public String addContato(String nome, IChatCliente cliente) throws RemoteException, ServerNotActiveException;
-	//add contato na lista previamente criada
-
-	// 2
-	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException, ServerNotActiveException;
+	public String enviarMensagem(Mensagem m, String destinatario) throws RemoteException, ServerNotActiveException;
 	public boolean enviarMensagemGrupo(Mensagem m, String destinatario) throws RemoteException, ServerNotActiveException;
-	
-	// 3
-	public String exibeHistórico(String nome) throws RemoteException;
-
-	// 4 e 5??
-
-	// 6 
-	public boolean criaGrupo(String nomeGrupo, ArrayList<IChatCliente> listaComponentes) throws RemoteException;
-
+	public String exibeHistorico(String nome) throws RemoteException;
+	public String criaGrupo(String nomeGrupo, ArrayList<String> listaComponentes, IChatCliente cliente) throws RemoteException, ServerNotActiveException;
 	
 	//Apoio
 	public String listaContatosEGrupos(IChatCliente cliente) throws RemoteException, ServerNotActiveException;

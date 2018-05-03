@@ -24,11 +24,10 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	
 	public boolean receberMensagem(Mensagem m) throws RemoteException {
 		System.out.println(
-				" "+
+				"\n "+
 				m.getNomeRemetente()+" - "+
 				m.getInstante()+":\n  "+
-				m.getTexto()
-				);
+				m.getTexto());
 		return true;
 	}
 	
@@ -49,74 +48,66 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 		Scanner sc = new Scanner(System.in);
 		String op="";
 		String mensagem, texto, destinatario, nomeGrupo;
-		System.out.println("----- Bem vindo "+nome +", comandos disponÌveis:\n"
+		System.out.println("\n----- Bem vindo "+nome +", comandos dispon√≠veis:\n"
 					+"# i <nome> <ip> - Insere o <ip> com o <nome> na lista de contatos. \n"
-					+"# g <nome> <lista-nomes> - Add o <nome> na lista de grupos <lista-nomes> como membros do grupo.\n"
+					+"# g @<nome> <lista-nomes> - Add o @<nome> na lista de grupos <lista-nomes> como membros do grupo.\n"
 					+"# l <nome> - Lista as mensagens enviadas e recebidas para um contato ou grupo\n"
 					+"# s <nome> <msg> - Envia uma mensagem <msg> para o <nome>\n"
 					+"# c - Lista todos os contatos e grupos.\n"
 					+"# e - Sair do chat\n"
-					+"# h - Ver esta lista sempre que necess·rio\n"
+					+"# h - Ver esta lista sempre que necess√°rio\n"
 					);
 		while(onLine) {
 			texto=sc.nextLine();
-			if (texto.substring(0, 1).equals("#")) { //se for um comando
+			if (texto.substring(0, 1).equals("#")) { //testa se for um comando
 				comandos=texto.split(" ");
 				op=comandos[1];
 			}
-			switch (op) {
+			switch (op) { //descobre qual comando para executar a a√ß√£o correspondente
 			case "i":
-				try {
-					String contato=comandos[2];
-					System.out.println(servidor.addContato(contato, this));
-				} catch (RemoteException e2) {
-					e2.printStackTrace();
-				} catch (ServerNotActiveException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			break;
-			
-			case "g":
-				//comandos[# i @nomeGrupo componente1 componente2]
-				if(comandos[2].startsWith("@")) {
-					nomeGrupo=comandos[2];
-					ArrayList<IChatCliente>listaComponentes=new ArrayList<IChatCliente>();
-					ArrayList<IChatCliente>auxContatos=new ArrayList<IChatCliente>();
+				if(comandos.length==4) { //primeiro parametro #, segundo i, terceiro nome, quarto IP 
 					try {
-						auxContatos=servidor.listaContatosObj(this);
-					} catch (RemoteException | ServerNotActiveException e) {
-						e.printStackTrace();
-					}
-					for(int i=3; i<comandos.length;i++) {
-						for(int j=0; j<auxContatos.size();j++) {
-							try {
-								if(auxContatos.get(j).getNome().equals(comandos[i])) {
-									listaComponentes.add(auxContatos.get(j));
-								}
-							} catch (RemoteException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}
-					try {
-						if(servidor.criaGrupo(nomeGrupo, listaComponentes)) {
-							System.out.println("Grupo "+nomeGrupo+" criado com sucesso");
-						}
-					} catch (RemoteException e) {
+						String contato=comandos[2];
+						String IP=comandos[3];
+						System.out.println(servidor.addContato(contato, this));  //TODO alterar para contato, IP, this
+					} catch (RemoteException e2) {
+						e2.printStackTrace();
+					} catch (ServerNotActiveException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}else {
-					System.out.println("Nomes de grupos devem comecar com @ \n");
+					System.out.println("O comando para adicionar um contato deve ter o seguinte formato: \n "
+							+ " # i <nome> <ip> \n");
 				}
+				
+			break;
+			
+			case "g":
+				//comandos[ # i @nomeGrupo componente1 componente2 ] com no m√°ximo 8 componentes
+				if(comandos[2].startsWith("@")) {
+					if(comandos.length<=11) { //primeiro parametro #, segundo g, terceiro nome1, quarto nome2, ..., 11¬∫ nome8
+						nomeGrupo=comandos[2];
+						ArrayList<String>listaPossiveisComponentes=new ArrayList<String>();
+						
+						for(int i=3; i<comandos.length;i++) {
+							listaPossiveisComponentes.add(comandos[i]);
+						}
+						try {
+							System.out.println(servidor.criaGrupo(nomeGrupo, listaPossiveisComponentes, this));
+						} catch (RemoteException | ServerNotActiveException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}else System.out.println("Os grupos podem conter no m√°ximo 8 participantes \n");
+				}else System.out.println("Nomes de grupos devem comecar com @ \n");
+				
 			break;
 			
 			case "l":
 				destinatario=comandos[2];
 				try {
-					System.out.println(servidor.exibeHistÛrico(destinatario));
+					System.out.println(servidor.exibeHistorico(destinatario));
 				} catch (RemoteException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
@@ -126,18 +117,18 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 			case "s":
 				destinatario=comandos[2];
 				mensagem=texto.substring(texto.indexOf(comandos[3]));
+				Mensagem m=new Mensagem(this, mensagem); //obj Mensagem recebe o Obj do remetente e uma String com a mensagem
+				//destinatario da mensagem √© identificado abaixo
 				if(destinatario.startsWith("@")) { // mensagem para o grupo todo
-					Mensagem m=new Mensagem(this, mensagem); //obj Mensagem recebe o Obj do remetente e uma String com a mensagem
 					try {
-						servidor.enviarMensagem(m, destinatario);
+						servidor.enviarMensagemGrupo(m, destinatario);
 					} catch (RemoteException | ServerNotActiveException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} //mÈtodo enviarMensagem recebendo a mensagem e o nome do grupo
+					} //m√©todo enviarMensagem recebendo a mensagem e o nome do grupo
 				}else { // mensagem para 1 contato
 					try {
-						Mensagem m=new Mensagem(this, mensagem); //obj Mensagem recebe o Obj do remetente e uma String com a mensagem
-						servidor.enviarMensagem(m, destinatario); //mÈtodo enviarMensagem recebendo a mensagem e o destinat·rio
+						System.out.println(servidor.enviarMensagem(m, destinatario)); //m√©todo enviarMensagem recebendo a mensagem e o destinat√°rio
 					} catch (RemoteException | ServerNotActiveException e3){
 						e3.printStackTrace();
 					}
@@ -161,25 +152,25 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 			break;
 			
 			case "e":
-				System.out.println("Encerrando execuÁ„o");
+				System.out.println("Encerrando execu√ß√£o");
 				onLine=false;
 				System.exit(0);
 			break;
 				
 			case "h":
-					System.out.println("----- Comandos disponÌveis -----\n"
+					System.out.println("\n----- Comandos dispon√≠veis -----\n"
 							+"# i <nome> <ip> - Insere o <ip> com o <nome> na lista de contatos.\n"
-							+"# g <nome> <lista-nomes> - Insere o <nome> na lista de grupos. Insere <lista-nomes> como membros do grupo.\n"
+							+"# g @<nome> <lista-nomes> - Insere o @<nome> na lista de grupos. Insere <lista-nomes> como membros do grupo.\n"
 							+"# l <nome> - Lista as mensagens enviadas e recebidas para um contato ou grupo\n" 
 							+"# s <nome> <msg> - Envia uma mensagem <msg> para o <nome>\n" 
 							+"# c - Lista todos os contatos e grupos.\n"
 							+"# e - Sair do chat\n" 
-							+"# h - Ver esta lista sempre que necess·rio\n" 
+							+"# h - Ver esta lista sempre que necess√°rio\n" 
 							);
 			break;
 			
 			default: 
-				System.out.println("Informe uma opÁ„o v·lida!\n");
+				System.out.println("Informe uma op√ß√£o valida!\n");
 			break;
 			}		
 		}

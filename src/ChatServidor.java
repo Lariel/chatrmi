@@ -31,7 +31,7 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		String instante = (dateFormat.format(dt));
 		this.registradosNoServidor.add(cliente);
 		//clienteIP=RemoteServer.getClientHost();
-		contatos=new AgendaContatos(cliente); // cria uma nova agenda de constatos para este cliente
+		contatos=new AgendaContatos(cliente); // cria uma nova agenda de contatos para este cliente
 		System.out.println("---------- "+instante+" ----------");
 		System.out.println(cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor");
 		System.out.println("--------------------------------------------------\n");
@@ -39,17 +39,22 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
  
 	//add contato na agenda recebendo Obj cliente como dono da agenda, e o nome do contato para registrar
 	public String addContato(String nome, IChatCliente cliente) throws RemoteException, ServerNotActiveException {
-		if(estaRegistradoNoServidor(nome)!=-1){ //segue adiante sÛ se estiver registrado no servidor
+		if(estaRegistradoNoServidor(nome)!=-1){ //segue adiante s√≥ se estiver registrado no servidor
 			return contatos.addContato(		// adiciona o contato encontrado abaixo
 					registradosNoServidor.get(estaRegistradoNoServidor(nome)),cliente.getIP()); //  RemoteServer.getClientHost()
-		}return "Usu·rio n„o registrado no servidor";
+		}else return "Usuario n√£o registrado no servidor \n";
 	}
 	
 	// enviar mensagem para um contato especifico
-	public boolean enviarMensagem(Mensagem m, String destinatario) throws RemoteException, ServerNotActiveException {
-		historico.addHistorico(destinatario, m);
-		historico.addHistorico(m.getNomeRemetente(),m);
-		return contatos.buscaPorNome(destinatario, m.getIpRemetente()).receberMensagem(m);
+	public String enviarMensagem(Mensagem m, String destinatario) throws RemoteException, ServerNotActiveException {
+		if(estaRegistradoNoServidor(destinatario)!=-1){ //segue adiante s√≥ se estiver registrado no servidor
+			historico.addHistorico(destinatario, m);
+			historico.addHistorico(m.getNomeRemetente(),m);
+			if(contatos.buscaPorNome(destinatario, m.getIpRemetente())!=null) {
+				contatos.buscaPorNome(destinatario, m.getIpRemetente()).receberMensagem(m);
+			}else return "Usu√°rio n√£o √© um contato\n";
+			return "\n";
+		}else return "Usuario n√£o registrado no servidor \n";
 	}
 	
 	 //enviar para um grupo
@@ -63,7 +68,7 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 			if(listaGrupos.get(i).getNomeGrupo().equals(destinatario)) {
 				auxComponentes=listaGrupos.get(i).getListaComponentes();
 			}else {
-				return false; //grupo n„o existe
+				return false; //grupo nÔøΩo existe
 			}
 		}
 		for(int i=0; i<auxComponentes.size();i++) {
@@ -72,20 +77,46 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		return false;
 	}
 	
-	public String exibeHistÛrico(String nome) throws RemoteException{
+	public String exibeHistorico(String nome) throws RemoteException{
 		return historico.devolveHistorico(nome);
 	}
 
-	public boolean criaGrupo(String nomeGrupo, ArrayList<IChatCliente> listaComponentes) throws RemoteException {
+	public String criaGrupo(String nomeGrupo, ArrayList<String> listaPossiveisComponentes, IChatCliente donoGrupo) throws RemoteException, ServerNotActiveException {
+		//contatos possui um hasmap cuja chave √© o IP do proprietario, e os valores s√£o arraylist de clientes
+		//percorrendo esta lista de contatos do dono do grupo, podemos comparar com o nome (String) de cada componente e validar se √© contato
+		ArrayList<IChatCliente>listaComponentes=new ArrayList<IChatCliente>();
+		ArrayList<IChatCliente>auxContatos=new ArrayList<IChatCliente>();
+		ArrayList<String>listaRejeitados=new ArrayList<String>();
+		String rejeitados="";
+		auxContatos=contatos.listaTodosObj(donoGrupo.getIP());
+		
+		for(int i=0; i<auxContatos.size();i++) { 
+			if(listaPossiveisComponentes.get(i).equals(auxContatos.get(i).getNome())) {
+				listaComponentes.add(auxContatos.get(i));
+			}else {
+				listaRejeitados.add(listaPossiveisComponentes.get(i));
+			}
+		}
+		
+		for(int i=0; i<listaRejeitados.size();i++) {
+			rejeitados=listaRejeitados.get(i)+"\n";
+		}
+		
+		
+		listaComponentes.add(donoGrupo); // ao criar um grupo, eu me add nele automaticamente
+		
 		grupo=new Grupo(nomeGrupo, listaComponentes);
 		listaGrupos.add(grupo);
-		return true;
+		
+		if(rejeitados.equals("")){
+			return "Grupo "+nomeGrupo+" criado com sucesso! \n";
+		}else return "Grupo "+nomeGrupo+" criado com sucesso! \n Os seguintes usu√°rios n√£o s√£o contatos, e n√£o foram adicionados: \n"+rejeitados+"\n";
 	}
 	
 	public String listaContatosEGrupos(IChatCliente cliente) throws RemoteException, ServerNotActiveException{
 		String contatosEGrupos="";
-		contatosEGrupos=contatos.listaTodos(cliente.getIP())+"\n";
-		//percorrer a listaGrupos, e em cada Grupo verificar se o cliente do parametro faz parte do Array contido no obj Grupo.
+		contatosEGrupos=contatos.listaTodos(cliente.getIP())+"\n"; //puxo a agenda de contatos de um determinado IP no formato String, falta add os grupos
+		// para add os grupos, percorrer a listaGrupos, e em cada Grupo verificar se o cliente do parametro faz parte do Array contido no obj Grupo.
 		for(int i=0;i<listaGrupos.size();i++) {
 			if(listaGrupos.get(i).eComponente(cliente)) {
 				contatosEGrupos=contatosEGrupos+listaGrupos.get(i).getNomeGrupo()+"\n";
@@ -102,27 +133,24 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	}
 	
 
-	//retorna posiÁ„o na lista ou -1 caso n„o esteja registrado no servidor
+	//retorna posicao na lista ou -1 caso nao esteja registrado no servidor
 	public int estaRegistradoNoServidor(String nome) throws RemoteException {
 		for(int i=0;i<registradosNoServidor.size();i++) {
 			if(nome.equals(registradosNoServidor.get(i).getNome())) {
-				return i; // j· esta registrado, retorna a posiÁ„o
+				return i; // j√° esta registrado, retorna a posi√ß√£o
 			}
 		}
-		return -1; //retorna -1 quando n„o est· registrado
+		return -1; //retorna -1 quando nao esta registrado
 	}
 	
-	//retorna posiÁ„o na lista ou -1 caso n„o esteja registrado no servidor
+	//retorna posicao na lista ou -1 caso n√£o esteja registrado no servidor
 	public int estaRegistradoNoServidor(String nome, String IP) throws RemoteException {
 		for(int i=0;i<registradosNoServidor.size();i++) {
-			if(nome.equals(registradosNoServidor.get(i).getNome())
-					&&
-			(IP.equals(registradosNoServidor.get(i).getIP()))
-				) {
-					return i; // j· esta registrado, retorna a posiÁ„o
-				}
+			if(nome.equals(registradosNoServidor.get(i).getNome())&&(IP.equals(registradosNoServidor.get(i).getIP()))) {
+				return i; // ja esta registrado, retorna a posicao
+			}
 		}
-		return -1; //retorna -1 quando n„o est· registrado
+		return -1; //retorna -1 quando nao esta registrado
 	}
 
 
