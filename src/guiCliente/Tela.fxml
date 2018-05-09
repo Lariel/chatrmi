@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -26,11 +28,16 @@
                   <Button fx:id="btnLogin" layoutX="153.0" layoutY="260.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="61.0" text="Login" />
                   <TextField fx:id="tfUser" layoutX="34.0" layoutY="90.0" prefHeight="25.0" prefWidth="217.0" promptText="seu_ip@ip_do_servidor" />
                   <TextField fx:id="tfNick" layoutX="34.0" layoutY="149.0" prefHeight="25.0" prefWidth="217.0" promptText="nickname" />
-                  <Text layoutX="87.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WhatsLike" textAlignment="CENTER" wrappingWidth="110.00000840425491">
+                  <Text layoutX="87.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WhatsLike" textAlignment="CENTER" wrappingWidth="110.00000840425491">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
+                  <ImageView fitHeight="69.0" fitWidth="75.0" layoutX="200.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/WhatsLike.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
             <TextField fx:id="tfMensagem" layoutX="257.0" layoutY="598.0" pickOnBounds="false" prefHeight="26.0" prefWidth="523.0" promptText="digite sua mensagem aqui" visible="false" />
