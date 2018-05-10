@@ -6,11 +6,16 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class TelaController implements Initializable{
 	// Tela de Login
@@ -41,12 +46,16 @@ public class TelaController implements Initializable{
 
     @FXML // fx:id="lvConversa"
     private ListView<?> lvConversa; // Value injected by FXMLLoader
-
+    
     @FXML // fx:id="tfMensagem"
     private TextField tfMensagem; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnEnviar"
     private Button btnEnviar; // Value injected by FXMLLoader
+    
+    // Menu
+    @FXML // fx:id="miSobre"
+    private MenuItem miSobre; // Value injected by FXMLLoader
 
     
     
@@ -66,6 +75,17 @@ public class TelaController implements Initializable{
     	lvConversa.setVisible(true);
     	tfMensagem.setVisible(true);
     	btnEnviar.setVisible(true);
+    }
+    
+	@FXML
+    void sobre(ActionEvent event) {
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Sobre");
+		alert.setHeaderText("TF - Sistemas Distribuidos");
+		alert.setContentText("Desenvolvido por: \n Ial Jonas\n Lariel Negreiros \n \nProfessor: \n Avelino Zorzo");
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/WhatsLike.png")));
+		alert.showAndWait();
     }
 
 	
