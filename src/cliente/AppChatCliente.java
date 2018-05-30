@@ -1,10 +1,12 @@
-package servidor;
+package cliente;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
+
+import servidor.IChatServidor;
 
 public class AppChatCliente {
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException, ServerNotActiveException {

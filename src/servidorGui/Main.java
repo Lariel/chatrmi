@@ -1,4 +1,4 @@
-package guiServidor;
+package servidorGui;
 	
 import java.io.IOException;
 import javafx.application.Application;

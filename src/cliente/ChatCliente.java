@@ -1,4 +1,4 @@
-package servidor;
+package cliente;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -8,6 +8,10 @@ import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import servidor.IChatCliente;
+import servidor.IChatServidor;
+import servidor.Mensagem;
 
 public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Runnable{
 	private static final long serialVersionUID = 1L;

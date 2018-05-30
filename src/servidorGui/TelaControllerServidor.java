@@ -1,4 +1,4 @@
-package guiServidor;
+package servidorGui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,7 +23,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import servidor.ChatServidor;
 
-public class TelaController implements Initializable{
+public class TelaControllerServidor implements Initializable{
 	ChatServidor servidor;
 	// Menu
 	@FXML
