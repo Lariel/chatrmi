@@ -38,11 +38,16 @@ public class TelaController implements Initializable{
 
     @FXML
     private CheckBox cbAtivarSrv;
+    
+    @FXML
+    private CheckBox cbCripto;
 
     @FXML
     private TextField tfIpSrv;
-
     
+
+    @FXML
+    private TextField tfChave;
 
     @FXML
     private Label lblStatusSrv;
@@ -50,7 +55,7 @@ public class TelaController implements Initializable{
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
@@ -58,29 +63,20 @@ public class TelaController implements Initializable{
     void ativarServidor(ActionEvent event) {
 		try {
 			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", new ChatServidor());
+			lblStatusSrv.setText("Servidor IP "+tfIpSrv.getText()+" online");
+			taLogSrv.setText("Servidor aceitando conexões. \n");
 		} catch (RemoteException e) {
-			//cbAtivarSrv.setDisable(true);
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Alerta");
-			alert.setHeaderText("deu merda: RemoteException");
-			alert.setContentText(e.toString());
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			alert.showAndWait();
+			taLogSrv.setText("Erro: "+e.toString());
 		} catch (MalformedURLException e) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Alerta");
-			alert.setHeaderText("deu merda: MalformedURLException");
-			alert.setContentText(e.toString());
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			alert.showAndWait();
+			taLogSrv.setText("Erro: "+e.toString());
 		}
-
     }
-
+	
     @FXML
-    void close(ActionEvent event) {
-    	Platform.exit();
+    void ativarCriptografia(ActionEvent event) {
+    	tfChave.setDisable(false);
     }
+
 	
 	@FXML
     void sobre(ActionEvent event) {
@@ -91,6 +87,11 @@ public class TelaController implements Initializable{
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/WhatsLike.png")));
 		alert.showAndWait();
+    }
+
+    @FXML
+    void close(ActionEvent event) {
+    	Platform.exit();
     }
 	
 
