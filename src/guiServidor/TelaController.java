@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import servidor.ChatServidor;
 
 public class TelaController implements Initializable{
-	
+	ChatServidor servidor;
 	// Menu
 	@FXML
     private MenuItem miClose;
@@ -62,7 +62,7 @@ public class TelaController implements Initializable{
 	@FXML
     void ativarServidor(ActionEvent event) {
 		try {
-			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", new ChatServidor());
+			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor());
 			lblStatusSrv.setText("Servidor IP "+tfIpSrv.getText()+" online");
 			taLogSrv.setText("Servidor aceitando conexões. \n");
 		} catch (RemoteException e) {

@@ -23,7 +23,7 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		
 		historico=new HistoricoMensagens();
 		listaGrupos=new ArrayList<IGrupo>();
-		System.out.println("Servidor aceitando conexoes\n");
+		//System.out.println("Servidor aceitando conexoes\n");
 	}
 
 	// recebe obj IChatCliente cliente do construtor da classe ChatCliente
