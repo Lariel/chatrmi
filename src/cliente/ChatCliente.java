@@ -20,7 +20,7 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	private boolean onLine=false;
 	private String[] comandos;
 	
-	protected ChatCliente(String nome, IChatServidor servidor, String IP) throws RemoteException, ServerNotActiveException {
+	public ChatCliente(String nome, IChatServidor servidor, String IP) throws RemoteException, ServerNotActiveException {
 		this.nome=nome;
 		this.servidor=servidor;
 		this.IP=IP;

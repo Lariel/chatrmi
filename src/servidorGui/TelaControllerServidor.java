@@ -76,6 +76,11 @@ public class TelaControllerServidor implements Initializable{
     void ativarCriptografia(ActionEvent event) {
     	tfChave.setDisable(false);
     }
+    
+    public void escreve(String texto) {
+    	taLogSrv.setText(texto);
+    	
+    }
 
 	
 	@FXML

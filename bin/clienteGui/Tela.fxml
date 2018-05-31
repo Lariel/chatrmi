@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="656.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteGui.TelaControllerCliente">
+<AnchorPane prefHeight="656.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteGui.TelaControllerCliente">
    <children>
       <Pane layoutY="-6.0" prefHeight="465.0" prefWidth="768.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,10 +25,6 @@
             <Text fx:id="tConversa" layoutX="257.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Conversa com" visible="false" />
             <Pane fx:id="loginPane" layoutX="290.0" layoutY="139.0" prefHeight="334.0" prefWidth="283.0">
                <children>
-                  <Button fx:id="btnCancelar" layoutX="50.0" layoutY="271.0" mnemonicParsing="false" text="Cancelar" />
-                  <Button fx:id="btnLogin" layoutX="153.0" layoutY="271.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="61.0" text="Login" />
-                  <TextField fx:id="tfUser" layoutX="34.0" layoutY="101.0" prefHeight="25.0" prefWidth="217.0" promptText="seu_ip@ip_do_servidor" />
-                  <TextField fx:id="tfNick" layoutX="34.0" layoutY="147.0" prefHeight="25.0" prefWidth="217.0" promptText="nickname" />
                   <Text layoutX="73.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WhatsLike" textAlignment="CENTER" wrappingWidth="137.43798559904099">
                      <font>
                         <Font size="24.0" />
@@ -39,8 +35,12 @@
                         <Image url="@../img/WhatsLike.png" />
                      </image>
                   </ImageView>
+                  <TextField fx:id="tfUser" accessibleText="seu_ip@ip_do_servidor" layoutX="34.0" layoutY="101.0" prefHeight="25.0" prefWidth="217.0" promptText="seu_ip@ip_do_servidor" />
+                  <TextField fx:id="tfNick" layoutX="34.0" layoutY="147.0" prefHeight="25.0" prefWidth="217.0" promptText="nickname" />
+                  <CheckBox fx:id="cbCriptoCliente" layoutX="35.0" layoutY="188.0" mnemonicParsing="false" onAction="#ativarCriptografia" text="Utilizar Criptografia" />
                   <TextField fx:id="tfChaveCliente" disable="true" layoutX="33.0" layoutY="221.0" prefHeight="25.0" prefWidth="217.0" promptText="Chave Compartilhada" />
-                  <CheckBox fx:id="cbCriptoCliente" layoutX="35.0" layoutY="188.0" mnemonicParsing="false" text="Utilizar Criptografia" />
+                  <Button fx:id="btnCancelar" layoutX="50.0" layoutY="271.0" mnemonicParsing="false" text="Cancelar" />
+                  <Button fx:id="btnLogin" layoutX="153.0" layoutY="271.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="61.0" text="Login" />
                </children>
             </Pane>
             <TextField fx:id="tfMensagem" layoutX="257.0" layoutY="598.0" pickOnBounds="false" prefHeight="26.0" prefWidth="523.0" promptText="digite sua mensagem aqui" visible="false" />
@@ -51,6 +51,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Arquivo">
             <items>
+                  <MenuItem fx:id="miLogout" mnemonicParsing="false" onAction="#logout" text="Logout" />
               <MenuItem fx:id="miClose" mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>

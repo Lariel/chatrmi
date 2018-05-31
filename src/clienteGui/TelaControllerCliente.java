@@ -1,8 +1,14 @@
 package clienteGui;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.util.ResourceBundle;
 
+import cliente.ChatCliente;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import servidor.IChatServidor;
 
 public class TelaControllerCliente implements Initializable{
 	// Tela de Login
@@ -65,27 +72,72 @@ public class TelaControllerCliente implements Initializable{
 	@FXML // fx:id="miSobre"
 	private MenuItem miSobre; // Value injected by FXMLLoader
 
-
-
 	@FXML
 	private MenuItem miClose;
+	
+    @FXML
+    private MenuItem miLogout;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@FXML
 	void login(ActionEvent event) {
-		loginPane.setVisible(false);
-		tContatos.setVisible(true);
-		lvContatos.setVisible(true);
-		tConversa.setVisible(true);
-		lvConversa.setVisible(true);
-		tfMensagem.setVisible(true);
-		btnEnviar.setVisible(true);
+		String ipServidor="";
+		String ipCliente="";
+		String nickCliente = tfNick.getText();
+		
+		if(tfUser.getText().contains("@")) {
+			int i = tfUser.getText().indexOf("@");
+			ipCliente=tfUser.getText().substring(0+i-1);
+			ipServidor=tfUser.getText().substring(i+1);
+			
+			try {
+				IChatServidor servidor = (IChatServidor) Naming.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
+				new Thread(new ChatCliente(nickCliente,servidor,ipCliente)).start();
+				
+				loginPane.setVisible(false);
+				tContatos.setVisible(true);
+				lvContatos.setVisible(true);
+				tConversa.setVisible(true);
+				lvConversa.setVisible(true);
+				tfMensagem.setVisible(true);
+				btnEnviar.setVisible(true);
+				
+				tfChaveCliente.clear();
+				tfNick.clear();
+				tfUser.clear();
+				
+			} catch (ServerNotActiveException | MalformedURLException | RemoteException | NotBoundException e) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Atenção");
+				alert.setHeaderText("Não foi possível conectar");
+				alert.setContentText(e.toString());
+				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/WhatsLike.png")));
+				alert.showAndWait();
+			}
+			
+		}else {
+			tfUser.clear();
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Atenção");
+			alert.setHeaderText("Não foi possível conectar");
+			alert.setContentText("Informe SEU_IP@IP_DO_SERVIDOR");
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/WhatsLike.png")));
+			alert.showAndWait();
+		}
+		
 	}
+	
+    @FXML
+    void ativarCriptografia(ActionEvent event) {
+    	tfChaveCliente.setDisable(false);
+    }
 
 	@FXML
 	void sobre(ActionEvent event) {
@@ -97,12 +149,22 @@ public class TelaControllerCliente implements Initializable{
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/WhatsLike.png")));
 		alert.showAndWait();
 	}
+	
+
+    @FXML
+    void logout(ActionEvent event) {
+    	loginPane.setVisible(true);
+		tContatos.setVisible(false);
+		lvContatos.setVisible(false);
+		tConversa.setVisible(false);
+		lvConversa.setVisible(false);
+		tfMensagem.setVisible(false);
+		btnEnviar.setVisible(false);
+    }
 
 	@FXML
 	void close(ActionEvent event) {
 		Platform.exit();
 	}
-
-
 
 }
