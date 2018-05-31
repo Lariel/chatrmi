@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import servidorGui.TelaControllerServidor;
+
 public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<IChatCliente>registradosNoServidor; // lista compartilhada com todos conectados no servidor
@@ -16,14 +18,20 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private IHistoricoMensagens historico;
 	private IGrupo grupo;
 	private ArrayList<IGrupo>listaGrupos;
+	
+	private final AppModelServidor modelServidor ;
 		
-	public ChatServidor() throws RemoteException {
+	public ChatServidor(AppModelServidor modelServidor) throws RemoteException {
 		registradosNoServidor=new ArrayList<IChatCliente>();
 		//contatos=new ArrayList<IChatCliente>();
 		
 		historico=new HistoricoMensagens();
 		listaGrupos=new ArrayList<IGrupo>();
+		
+		this.modelServidor=modelServidor;
 		//System.out.println("Servidor aceitando conexoes\n");
+		
+		modelServidor.setText("Servidor aceitando conexões \n");
 	}
 
 	// recebe obj IChatCliente cliente do construtor da classe ChatCliente
@@ -32,11 +40,18 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		String instante = (dateFormat.format(dt));
 		this.registradosNoServidor.add(cliente);
-		//clienteIP=RemoteServer.getClientHost();
+		
 		contatos=new AgendaContatos(cliente); // cria uma nova agenda de contatos para este cliente
-		System.out.println("---------- "+instante+" ----------");
-		System.out.println(cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor");
-		System.out.println("--------------------------------------------------\n");
+		
+		//forma antiga, usando comando
+		//System.out.println("---------- "+instante+" ----------");
+		//System.out.println(cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor");
+		//System.out.println("--------------------------------------------------\n");
+		
+
+		//nova forma de mostrar as informações, usando a interface gráfica
+		modelServidor.setText("---------- "+instante+" ----------\n"+
+				cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor\n");
 	}
  
 	//add contato na agenda recebendo Obj cliente como dono da agenda, e o nome do contato para registrar

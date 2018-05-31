@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import servidor.AppModelServidor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,7 +13,14 @@ import javafx.scene.image.Image;
 public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("Tela.fxml"));
+		AppModelServidor modelServidor = new AppModelServidor();
+		
+		//Parent root = FXMLLoader.load(getClass().getResource("Tela.fxml"));
+
+		FXMLLoader telaServidor = new FXMLLoader(getClass().getResource("Tela.fxml"));
+		telaServidor.setController(new TelaControllerServidor(modelServidor));
+		Parent root = telaServidor.load();
+		
 		//Image applicationIcon = new Image(getClass().getResourceAsStream("/img/favicon.png"));
 		Scene scene = new Scene(root);
 		

@@ -21,6 +21,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import servidor.AppModelServidor;
 import servidor.ChatServidor;
 
 public class TelaControllerServidor implements Initializable{
@@ -52,19 +53,28 @@ public class TelaControllerServidor implements Initializable{
     @FXML
     private Label lblStatusSrv;
     
+    private final AppModelServidor modelServidor ;
+    
+    public TelaControllerServidor(AppModelServidor modelServidor) {
+    	this.modelServidor=modelServidor;
+    	modelServidor.textProperty().addListener((obs, oldText, newText) -> {
+			if(oldText==null) {
+	    		taLogSrv.setText(newText);	
+	    	}else taLogSrv.setText(oldText+"\n"+newText);
+    	});
+    }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 		
 	}
 	
 	@FXML
     void ativarServidor(ActionEvent event) {
 		try {
-			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor());
+			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor(modelServidor));
 			lblStatusSrv.setText("Servidor IP "+tfIpSrv.getText()+" online");
-			taLogSrv.setText("Servidor aceitando conexões. \n");
+			
 		} catch (RemoteException e) {
 			taLogSrv.setText("Erro: "+e.toString());
 		} catch (MalformedURLException e) {
@@ -76,12 +86,6 @@ public class TelaControllerServidor implements Initializable{
     void ativarCriptografia(ActionEvent event) {
     	tfChave.setDisable(false);
     }
-    
-    public void escreve(String texto) {
-    	taLogSrv.setText(texto);
-    	
-    }
-
 	
 	@FXML
     void sobre(ActionEvent event) {

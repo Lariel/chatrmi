@@ -92,7 +92,7 @@ public class TelaControllerCliente implements Initializable{
 		
 		if(tfUser.getText().contains("@")) {
 			int i = tfUser.getText().indexOf("@");
-			ipCliente=tfUser.getText().substring(0+i-1);
+			ipCliente=tfUser.getText().substring(0,i);
 			ipServidor=tfUser.getText().substring(i+1);
 			
 			try {
