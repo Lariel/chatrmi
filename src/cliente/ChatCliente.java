@@ -9,6 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import clienteGui.Main;
 import servidor.IChatCliente;
 import servidor.IChatServidor;
 import servidor.Mensagem;
@@ -20,20 +21,31 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	private boolean onLine=false;
 	private String[] comandos;
 	
-	public ChatCliente(String nome, IChatServidor servidor, String IP) throws RemoteException, ServerNotActiveException {
+	private final AppModelCliente modelCliente;
+	
+	public ChatCliente(String nome, IChatServidor servidor, String IP,AppModelCliente modelCliente) throws RemoteException, ServerNotActiveException {
 		this.nome=nome;
 		this.servidor=servidor;
 		this.IP=IP;
 		this.onLine=true;
+    	this.modelCliente=modelCliente;
 		servidor.registrarClienteChat(this); //me registrei no servidor
 	}
 	
 	public boolean receberMensagem(Mensagem m) throws RemoteException {
+		modelCliente.setText(
+				"\n "+
+				m.getNomeRemetente()+" - "+
+				m.getInstante()+":\n  "+
+				m.getTexto()
+				);
+		/*
 		System.out.println(
 				"\n "+
 				m.getNomeRemetente()+" - "+
 				m.getInstante()+":\n  "+
 				m.getTexto());
+			*/
 		return true;
 	}
 	

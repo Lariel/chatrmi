@@ -17,17 +17,19 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private IAgendaContatos contatos;
 	private IHistoricoMensagens historico;
 	private IGrupo grupo;
+	private String ipServidor;
 	private ArrayList<IGrupo>listaGrupos;
 	
 	private final AppModelServidor modelServidor ;
 		
-	public ChatServidor(AppModelServidor modelServidor) throws RemoteException {
+	public ChatServidor(String ipServidor,AppModelServidor modelServidor) throws RemoteException {
 		registradosNoServidor=new ArrayList<IChatCliente>();
 		//contatos=new ArrayList<IChatCliente>();
 		
 		historico=new HistoricoMensagens();
 		listaGrupos=new ArrayList<IGrupo>();
 		
+		this.ipServidor=ipServidor;
 		this.modelServidor=modelServidor;
 		//System.out.println("Servidor aceitando conexoes\n");
 		
@@ -168,6 +170,10 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 			}
 		}
 		return -1; //retorna -1 quando nao esta registrado
+	}
+	
+	public String getIpServidor() throws RemoteException{
+		return ipServidor;
 	}
 
 

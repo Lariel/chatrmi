@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="656.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteGui.TelaControllerCliente">
+<AnchorPane prefHeight="656.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane layoutY="-6.0" prefHeight="465.0" prefWidth="768.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -63,6 +63,6 @@
         </menus>
       </MenuBar>
       <MenuBar prefHeight="25.0" prefWidth="681.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <Label layoutX="3.0" layoutY="305.0" text="Status servidor:" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+      <Label fx:id="lblStatus" layoutX="3.0" layoutY="305.0" text="Desconectado" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
    </children>
 </AnchorPane>

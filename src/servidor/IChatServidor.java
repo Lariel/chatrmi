@@ -18,4 +18,5 @@ public interface IChatServidor extends Remote{
 	public ArrayList<IChatCliente> listaContatosObj(IChatCliente cliente)throws RemoteException, ServerNotActiveException;
 	public int estaRegistradoNoServidor(String nome) throws RemoteException;
 	public int estaRegistradoNoServidor(String nome, String IP) throws RemoteException;
+	public String getIpServidor()throws RemoteException;
 }

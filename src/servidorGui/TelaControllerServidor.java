@@ -72,7 +72,7 @@ public class TelaControllerServidor implements Initializable{
 	@FXML
     void ativarServidor(ActionEvent event) {
 		try {
-			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor(modelServidor));
+			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor(tfIpSrv.getText(),modelServidor));
 			lblStatusSrv.setText("Servidor IP "+tfIpSrv.getText()+" online");
 			
 		} catch (RemoteException e) {
