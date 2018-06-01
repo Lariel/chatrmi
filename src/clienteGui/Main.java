@@ -2,7 +2,6 @@ package clienteGui;
 	
 import java.io.IOException;
 
-import cliente.AppModelCliente;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -15,12 +14,12 @@ import javafx.scene.layout.BorderPane;
 public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
-		AppModelCliente modelCliente = new AppModelCliente();
+		ModelCliente modelCliente = new ModelCliente();
 		
 		//Parent root = FXMLLoader.load(getClass().getResource("Tela.fxml"));
 		
-		FXMLLoader telaCliente = new FXMLLoader(getClass().getResource("Tela.fxml"));
-		telaCliente.setController(new TelaControllerCliente(modelCliente));
+		FXMLLoader telaCliente = new FXMLLoader(getClass().getResource("ViewCliente.fxml"));
+		telaCliente.setController(new ControllerCliente(modelCliente));
 		Parent root = telaCliente.load();
 		
 		Scene scene = new Scene(root);

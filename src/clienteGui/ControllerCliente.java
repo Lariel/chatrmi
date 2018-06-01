@@ -8,7 +8,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
 import java.util.ResourceBundle;
 
-import cliente.AppModelCliente;
 import cliente.ChatCliente;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -29,10 +28,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import servidor.AppModelServidor;
 import servidor.IChatServidor;
+import servidorGui.ModelServidor;
 
-public class TelaControllerCliente implements Initializable{
+public class ControllerCliente implements Initializable{
 	// Tela de Login
 	@FXML // fx:id="loginPane"
 	private Pane loginPane; // Value injected by FXMLLoader
@@ -87,10 +86,10 @@ public class TelaControllerCliente implements Initializable{
     @FXML
     private MenuItem miLogout;
 
-    private final AppModelCliente modelCliente;
+    private final ModelCliente modelCliente;
     private ObservableList<String> conversa = FXCollections.observableArrayList();
     
-    public TelaControllerCliente(AppModelCliente modelCliente) {
+    public ControllerCliente(ModelCliente modelCliente) {
     	this.modelCliente=modelCliente;
     	
     	modelCliente.textProperty().addListener((obs,oldText,newText) -> {

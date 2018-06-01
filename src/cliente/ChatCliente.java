@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import clienteGui.Main;
+import clienteGui.ModelCliente;
 import servidor.IChatCliente;
 import servidor.IChatServidor;
 import servidor.Mensagem;
@@ -21,9 +22,9 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	private boolean onLine=false;
 	private String[] comandos;
 	
-	private final AppModelCliente modelCliente;
+	private final ModelCliente modelCliente;
 	
-	public ChatCliente(String nome, IChatServidor servidor, String IP,AppModelCliente modelCliente) throws RemoteException, ServerNotActiveException {
+	public ChatCliente(String nome, IChatServidor servidor, String IP,ModelCliente modelCliente) throws RemoteException, ServerNotActiveException {
 		this.nome=nome;
 		this.servidor=servidor;
 		this.IP=IP;

@@ -8,7 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import servidorGui.TelaControllerServidor;
+import servidorGui.ModelServidor;
+import servidorGui.ControllerServidor;
 
 public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private static final long serialVersionUID = 1L;
@@ -20,9 +21,9 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 	private String ipServidor;
 	private ArrayList<IGrupo>listaGrupos;
 	
-	private final AppModelServidor modelServidor ;
+	private final ModelServidor modelServidor ;
 		
-	public ChatServidor(String ipServidor,AppModelServidor modelServidor) throws RemoteException {
+	public ChatServidor(String ipServidor,ModelServidor modelServidor) throws RemoteException {
 		registradosNoServidor=new ArrayList<IChatCliente>();
 		//contatos=new ArrayList<IChatCliente>();
 		

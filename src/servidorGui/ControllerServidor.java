@@ -21,10 +21,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import servidor.AppModelServidor;
 import servidor.ChatServidor;
 
-public class TelaControllerServidor implements Initializable{
+public class ControllerServidor implements Initializable{
 	ChatServidor servidor;
 	// Menu
 	@FXML
@@ -53,9 +52,9 @@ public class TelaControllerServidor implements Initializable{
     @FXML
     private Label lblStatusSrv;
     
-    private final AppModelServidor modelServidor ;
+    private final ModelServidor modelServidor ;
     
-    public TelaControllerServidor(AppModelServidor modelServidor) {
+    public ControllerServidor(ModelServidor modelServidor) {
     	this.modelServidor=modelServidor;
     	modelServidor.textProperty().addListener((obs, oldText, newText) -> {
 			if(oldText==null) {

@@ -1,9 +1,9 @@
-package servidor;
+package servidorGui;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class AppModelServidor {
+public class ModelServidor {
 
     private final StringProperty text = new SimpleStringProperty();
 

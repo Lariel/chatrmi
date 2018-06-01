@@ -1,10 +1,10 @@
-package cliente;
+package clienteGui;
 
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class AppModelCliente {
+public class ModelCliente {
 
     private final StringProperty text = new SimpleStringProperty();
 
