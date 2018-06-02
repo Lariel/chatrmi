@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import cliente.IChatCliente;
+
 public class AgendaContatos implements IAgendaContatos{
 	private String nomeProprietario, ipProprietario;
 	private ArrayList<IChatCliente>listaContatos;

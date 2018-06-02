@@ -1,6 +1,9 @@
 package servidor;
 
 import java.util.*;
+
+import cliente.IChatCliente;
+
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.text.*;

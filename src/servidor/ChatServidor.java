@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import cliente.IChatCliente;
 import servidorGui.ModelServidor;
 import servidorGui.ControllerServidor;
 

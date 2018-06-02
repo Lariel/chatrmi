@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import clienteGui.Main;
 import clienteGui.ModelCliente;
-import servidor.IChatCliente;
 import servidor.IChatServidor;
 import servidor.Mensagem;
 
@@ -193,5 +192,11 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 			break;
 			}		
 		}
-	}	
+	}
+	
+	public boolean addContato(String ip, String nickname) throws RemoteException, ServerNotActiveException {
+		servidor.addContato(nickname, this);
+		return true;
+	}
+	
 }

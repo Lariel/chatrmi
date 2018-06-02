@@ -5,6 +5,8 @@ import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cliente.IChatCliente;
+
 public class Grupo implements IGrupo{
 	private String nomeGrupo;
 	private ArrayList<IChatCliente>listaComponentes;

@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 
+import cliente.IChatCliente;
+
 public interface IGrupo {
 	public String getNomeGrupo()throws RemoteException;
 	public boolean eComponente(IChatCliente contato) throws RemoteException;

@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 
+import cliente.IChatCliente;
+
 public interface IChatServidor extends Remote{
 	public void registrarClienteChat(IChatCliente cliente) throws RemoteException, ServerNotActiveException;
 	public String addContato(String nome, IChatCliente cliente) throws RemoteException, ServerNotActiveException;
