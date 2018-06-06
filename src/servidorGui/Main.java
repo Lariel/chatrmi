@@ -26,9 +26,9 @@ public class Main extends Application {
 		stage.setScene(scene);
 		//stage.setMinWidth(620);
 		//stage.setMinHeight(300);
-		stage.setTitle("Chat RMI Servidor");
+		stage.setTitle("WhatsLike - Servidor");
 		stage.setResizable(false);
-		//stage.getIcons().add(applicationIcon);
+		stage.getIcons().add(new Image("/img/WhatsLike.png"));
 		stage.show();
 		
 	}
