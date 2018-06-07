@@ -7,6 +7,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import cliente.ChatCliente;
@@ -35,6 +36,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import servidor.AgendaContatos;
 import servidor.IChatServidor;
 import servidorGui.ModelServidor;
 
@@ -72,7 +74,7 @@ public class ControllerCliente implements Initializable{
 	private Text tConversa; // Value injected by FXMLLoader
 
 	@FXML // fx:id="lvContatos"
-	private ListView<?> lvContatos; // Value injected by FXMLLoader
+	private ListView<IChatCliente> lvContatos; // Value injected by FXMLLoader
 
 	@FXML // fx:id="lvConversa"
 	private ListView<String> lvConversa; // Value injected by FXMLLoader
@@ -120,9 +122,8 @@ public class ControllerCliente implements Initializable{
 
 	private final ModelCliente modelCliente;
 	private ObservableList<String> conversa = FXCollections.observableArrayList();
-	
-	//private IChatCliente cliente;
-	
+	private ObservableList<IChatCliente> agendaContatos = FXCollections.observableArrayList();
+	private IChatCliente cliente;	
 	private Stage stageAddContato = new Stage(); //popup add contato
 
 	public ControllerCliente(ModelCliente modelCliente) {
@@ -133,6 +134,8 @@ public class ControllerCliente implements Initializable{
 				conversa.add(newText);
 			}else conversa.add(oldText+newText);
 		});
+		
+		
 	}
 
 	@Override
@@ -155,7 +158,7 @@ public class ControllerCliente implements Initializable{
 
 			try {
 				IChatServidor servidor = (IChatServidor) Naming.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
-				new Thread(new ChatCliente(nickCliente,servidor,ipCliente,modelCliente)).start();
+				cliente = new ChatCliente(nickCliente,servidor,ipCliente,modelCliente);
 
 				Stage primStage = (Stage) tfNick.getScene().getWindow();
 				primStage.setTitle("WhatsLike - "+tfNick.getText());
@@ -221,8 +224,16 @@ public class ControllerCliente implements Initializable{
     @FXML
     void executaAddContato(ActionEvent event) throws RemoteException, ServerNotActiveException {
     	//System.out.println("Ip: "+tfIpContatoAdd.getText()+"\nNickname: "+tfNickAdd.getText());
-    	System.out.println("# i "+tfNickAdd.getText()+" " +tfIpContatoAdd.getText()+"\n");
     	//modelCliente.setText("# i "+tfNickAdd.getText()+ tfIpContatoAdd.getText());
+    	
+    	System.out.println("# i "+tfNickAdd.getText()+" " +tfIpContatoAdd.getText()+"\n");
+    	cliente.addContato(tfNickAdd.getText(), cliente);
+    	
+    	lvContatos.getItems().clear();
+    	agendaContatos.addAll(cliente.listaContatos(cliente)); //=cliente.listaContatos(cliente);
+    	
+    	lvContatos.setItems(agendaContatos);
+    	
     	stageAddContato.close();
     }
 

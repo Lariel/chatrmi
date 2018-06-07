@@ -58,11 +58,17 @@ public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
 				cliente.getIP() + " - " + cliente.getNome()+" se conectou ao servidor\n");
 	}
  
-	//add contato na agenda recebendo Obj cliente como dono da agenda, e o nome do contato para registrar
+	
+	/**
+	 * 
+	 * @param String nickname ou nome do contato
+	 * @param String ip do contato (fazer!!)
+	 * @param IChatCliente cliente será o dono da agenda de contatos
+	 */
 	public String addContato(String nome, IChatCliente cliente) throws RemoteException, ServerNotActiveException {
 		if(estaRegistradoNoServidor(nome)!=-1){ //segue adiante só se estiver registrado no servidor
 			return contatos.addContato(		// adiciona o contato encontrado abaixo
-					registradosNoServidor.get(estaRegistradoNoServidor(nome)),cliente.getIP()); //  RemoteServer.getClientHost()
+					registradosNoServidor.get(estaRegistradoNoServidor(nome)),cliente.getIP());  //obj contato, ip do proprietário da agenda
 		}else return "Usuario não registrado no servidor \n";
 	}
 	

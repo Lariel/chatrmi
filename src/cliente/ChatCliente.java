@@ -14,7 +14,7 @@ import clienteGui.ModelCliente;
 import servidor.IChatServidor;
 import servidor.Mensagem;
 
-public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Runnable{
+public class ChatCliente extends UnicastRemoteObject implements IChatCliente{ //Runnable
 	private static final long serialVersionUID = 1L;
 	private IChatServidor servidor;
 	private String nome, IP=null;
@@ -60,7 +60,28 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	public boolean getStatus()throws RemoteException{
 		return onLine;
 	}
-
+	
+	
+	public void addContato(String nick, IChatCliente cliente)throws RemoteException, ServerNotActiveException{
+		System.out.println(servidor.addContato(nick, cliente));
+	}
+	
+	public ArrayList<IChatCliente> listaContatos (IChatCliente cliente)throws RemoteException, ServerNotActiveException{
+		ArrayList<IChatCliente> listaContatosObj=new ArrayList<IChatCliente>();
+		listaContatosObj=servidor.listaContatosObj(cliente);
+		return listaContatosObj;
+	}
+	
+	@Override
+	public String toString() {
+		return nome;
+		
+	}
+	
+	
+	
+	/*
+	 
 	@Override
 	public void run() {
 		Scanner sc = new Scanner(System.in);
@@ -193,4 +214,7 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 			}		
 		}
 	}	
+
+
+	 */
 }

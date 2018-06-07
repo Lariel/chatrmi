@@ -72,7 +72,7 @@ public class ControllerServidor implements Initializable{
     void ativarServidor(ActionEvent event) {
 		try {
 			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor(tfIpSrv.getText(),modelServidor));
-			lblStatusSrv.setText("Servidor IP "+tfIpSrv.getText()+" online");
+			lblStatusSrv.setText("Servidor IP "+servidor.getIpServidor()+" online");
 			
 		} catch (RemoteException e) {
 			taLogSrv.setText("Erro: "+e.toString());
