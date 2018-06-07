@@ -11,6 +11,4 @@ public interface IChatCliente extends Remote{
 	public String getNome() throws RemoteException; 
 	public String getIP() throws RemoteException;
 	public boolean getStatus()throws RemoteException;
-	public boolean addContato(String ip, String nickname) throws RemoteException, ServerNotActiveException;
-
 }

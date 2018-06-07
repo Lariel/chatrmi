@@ -121,7 +121,9 @@ public class ControllerCliente implements Initializable{
 	private final ModelCliente modelCliente;
 	private ObservableList<String> conversa = FXCollections.observableArrayList();
 	
-	private IChatCliente cliente;
+	//private IChatCliente cliente;
+	
+	private Stage stageAddContato = new Stage(); //popup add contato
 
 	public ControllerCliente(ModelCliente modelCliente) {
 		this.modelCliente=modelCliente;
@@ -153,8 +155,7 @@ public class ControllerCliente implements Initializable{
 
 			try {
 				IChatServidor servidor = (IChatServidor) Naming.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
-				IChatCliente cliente = new ChatCliente(nickCliente,servidor,ipCliente,modelCliente);
-				new Thread((Runnable) cliente).start();
+				new Thread(new ChatCliente(nickCliente,servidor,ipCliente,modelCliente)).start();
 
 				Stage primStage = (Stage) tfNick.getScene().getWindow();
 				primStage.setTitle("WhatsLike - "+tfNick.getText());
@@ -207,7 +208,7 @@ public class ControllerCliente implements Initializable{
 
 		Scene sceneAddContato = new Scene(parentAddContato);
 
-		Stage stageAddContato = new Stage();
+		
 		stageAddContato.setAlwaysOnTop(true);
 		stageAddContato.setScene(sceneAddContato);
 		stageAddContato.getIcons().add(new Image("/img/WhatsLike.png"));
@@ -219,7 +220,10 @@ public class ControllerCliente implements Initializable{
 	
     @FXML
     void executaAddContato(ActionEvent event) throws RemoteException, ServerNotActiveException {
-    	cliente.addContato(tfIpContatoAdd.getText(), tfNickAdd.getText());
+    	//System.out.println("Ip: "+tfIpContatoAdd.getText()+"\nNickname: "+tfNickAdd.getText());
+    	System.out.println("# i "+tfNickAdd.getText()+" " +tfIpContatoAdd.getText()+"\n");
+    	//modelCliente.setText("# i "+tfNickAdd.getText()+ tfIpContatoAdd.getText());
+    	stageAddContato.close();
     }
 
     @FXML
