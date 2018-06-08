@@ -37,6 +37,6 @@ Criar .java.policy com o seguinte conteúdo e salvar na /home (linux):
 ## Lista de requisitos:
 - [x] Cada cliente pode registrar uma lista de contatos;
 - [x] Só é possível enviar mensagens para contatos registrados na lista de contatos;
-- [ ] Armazenar histórico de mensagens enviadas e recebidas para cada contato;
-- [ ] Mostrar informação se a mensagem foi lida/exibida (a mensagem é lida quando o destinatário listar as mensagens de um determinado contato);
-- [ ] Criar grupos com contatos, com nome e lista de contatos participantes (máximo 8);
+- [x] Armazenar histórico de mensagens enviadas e recebidas para cada contato;
+- [x] Mostrar informação se a mensagem foi lida/exibida (a mensagem é lida quando o destinatário listar as mensagens de um determinado contato);
+- [x] Criar grupos com contatos, com nome e lista de contatos participantes (máximo 8);
