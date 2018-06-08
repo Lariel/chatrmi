@@ -12,19 +12,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="324.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="325.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutY="-6.0" prefHeight="331.0" prefWidth="722.0">
+      <Pane layoutY="-6.0" prefHeight="331.0" prefWidth="866.0">
          <children>
             <Text layoutX="251.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Log do servidor" />
-            <Text layoutX="26.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Informações da Conexão" />
-            <TextField fx:id="tfIpSrv" layoutX="26.0" layoutY="84.0" prefHeight="26.0" prefWidth="195.0" promptText="IP Servidor" />
-            <CheckBox fx:id="cbAtivarSrv" layoutX="26.0" layoutY="125.0" mnemonicParsing="false" onAction="#ativarServidor" text="Ativar / Desativar servidor" />
+            <Text layoutX="26.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Informações da Conexão" />
+            <TextField fx:id="tfIpSrv" layoutX="26.0" layoutY="90.0" prefHeight="26.0" prefWidth="195.0" promptText="IP Servidor" />
+            <CheckBox fx:id="cbAtivarSrv" layoutX="26.0" layoutY="131.0" mnemonicParsing="false" onAction="#ativarServidor" text="Ativar / Desativar servidor" />
             <Separator layoutX="229.0" layoutY="57.0" orientation="VERTICAL" prefHeight="242.0" prefWidth="9.0" />
-            <CheckBox fx:id="cbCripto" layoutX="26.0" layoutY="203.0" mnemonicParsing="false" onAction="#ativarCriptografia" text="Utilizar Criptografia" />
-            <TextField fx:id="tfChave" disable="true" layoutX="26.0" layoutY="246.0" prefHeight="26.0" prefWidth="195.0" promptText="Chave Compartilhada" />
-            <Separator layoutX="23.0" layoutY="175.0" prefHeight="3.0" prefWidth="195.0" />
-            <TextArea fx:id="taLogSrv" editable="false" layoutX="251.0" layoutY="84.0" prefHeight="215.0" prefWidth="445.0" />
+            <TextArea fx:id="taLogSrv" editable="false" layoutX="251.0" layoutY="84.0" prefHeight="215.0" prefWidth="591.0" />
          </children>
       </Pane>
       <MenuBar layoutX="275.0" layoutY="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

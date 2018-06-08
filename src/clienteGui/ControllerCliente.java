@@ -41,32 +41,12 @@ import servidor.IChatServidor;
 import servidorGui.ModelServidor;
 
 public class ControllerCliente implements Initializable{
-	// Tela de Login
-	@FXML // fx:id="loginPane"
-	private Pane loginPane; // Value injected by FXMLLoader
-
-	@FXML // fx:id="btnCancelar"
-	private Button btnCancelar; // Value injected by FXMLLoader
-
-	@FXML // fx:id="btnLogin"
-	private Button btnLogin; // Value injected by FXMLLoader
-
-	@FXML // fx:id="tfUser"
-	private TextField tfUser; // Value injected by FXMLLoader
-
-	@FXML // fx:id="tfNick"
-	private TextField tfNick; // Value injected by FXMLLoader
-
-	@FXML
-	private TextField tfChaveCliente;
-
-	@FXML
-	private CheckBox cbCriptoCliente;
-
-	@FXML
-	private Label lblStatus;
+	
 
 	// Conversa
+	@FXML
+	private Label lblStatus;
+	
 	@FXML // fx:id="tContatos"
 	private Text tContatos; // Value injected by FXMLLoader
 
@@ -126,7 +106,7 @@ public class ControllerCliente implements Initializable{
 	private IChatCliente cliente;	
 	private Stage stageAddContato = new Stage(); //popup add contato
 
-	public ControllerCliente(ModelCliente modelCliente) {
+	public ControllerCliente(ModelCliente modelCliente, IChatCliente cliente) {
 		this.modelCliente=modelCliente;
 
 		modelCliente.textProperty().addListener((obs,oldText,newText) -> {
@@ -135,16 +115,20 @@ public class ControllerCliente implements Initializable{
 			}else conversa.add(oldText+newText);
 		});
 		
+		this.cliente=cliente;
+	
 		
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		tfUser.setTooltip(new Tooltip("Informe SEU_IP@IP_SERVIDOR"));
 		lvConversa.setItems(conversa);
+		
+		
 
 	}
 
+	/*
 	@FXML
 	void login(ActionEvent event) {
 		String ipServidor="";
@@ -201,7 +185,13 @@ public class ControllerCliente implements Initializable{
 		}
 
 	}
+	
+	*/
 
+	/*
+	 * Mostra popup para add contatos
+	 * 
+	 */
 	@FXML
 	void mostraAddContato(ActionEvent event) throws IOException {
 		FXMLLoader addContato = new FXMLLoader(getClass().getResource("ViewAddContato.fxml"));
@@ -217,7 +207,7 @@ public class ControllerCliente implements Initializable{
 		stageAddContato.getIcons().add(new Image("/img/WhatsLike.png"));
 		stageAddContato.setTitle("WhatsLike - Add Contato");
 		stageAddContato.setResizable(false);
-		stageAddContato.initModality(Modality.APPLICATION_MODAL); //bloqueia main window
+		//stageAddContato.initModality(Modality.APPLICATION_MODAL); //bloqueia main window
 		stageAddContato.show();
 	}
 	
@@ -249,22 +239,27 @@ public class ControllerCliente implements Initializable{
 
 	}
 
-	@FXML
-	void ativarCriptografia(ActionEvent event) {
-		tfChaveCliente.setDisable(false);
-	}
 
 	@FXML
-	void logout(ActionEvent event) {
-		loginPane.setVisible(true);
-		tContatos.setVisible(false);
-		lvContatos.setVisible(false);
-		tConversa.setVisible(false);
-		lvConversa.setVisible(false);
-		tfMensagem.setVisible(false);
-		btnEnviar.setVisible(false);
+	void logout(ActionEvent event) throws IOException {
 		lblStatus.setText("Desconectado");
-		mConversa.setDisable(true);
+		
+		FXMLLoader telaLogin = new FXMLLoader(getClass().getResource("ViewLoginCliente.fxml"));
+		//telaCliente.setController(new ControllerCliente(modelCliente));
+		telaLogin.setController(new ControllerLoginCliente(modelCliente));
+		Parent root = telaLogin.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.getIcons().add(new Image("/img/WhatsLike.png"));
+		stage.setScene(scene);
+		stage.setTitle("WhatsLike - Login Cliente");
+		stage.setResizable(false);
+		stage.show();
+		
+		Stage mainStage = (Stage) lvConversa.getScene().getWindow();
+		mainStage.close();
+
 	}
 
 	@FXML

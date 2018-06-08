@@ -18,15 +18,16 @@ public class Main extends Application {
 		
 		//Parent root = FXMLLoader.load(getClass().getResource("Tela.fxml"));
 		
-		FXMLLoader telaCliente = new FXMLLoader(getClass().getResource("ViewCliente.fxml"));
-		telaCliente.setController(new ControllerCliente(modelCliente));
-		Parent root = telaCliente.load();
+		FXMLLoader telaLogin = new FXMLLoader(getClass().getResource("ViewLoginCliente.fxml"));
+		//telaCliente.setController(new ControllerCliente(modelCliente));
+		telaLogin.setController(new ControllerLoginCliente(modelCliente));
+		Parent root = telaLogin.load();
 		
 		Scene scene = new Scene(root);
 		
 		stage.getIcons().add(new Image("/img/WhatsLike.png"));
 		stage.setScene(scene);
-		stage.setTitle("WhatsLike - Cliente");
+		stage.setTitle("WhatsLike - Login Cliente");
 		stage.setResizable(false);
 		stage.show();
 	}

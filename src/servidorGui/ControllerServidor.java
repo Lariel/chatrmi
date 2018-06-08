@@ -38,16 +38,9 @@ public class ControllerServidor implements Initializable{
 
     @FXML
     private CheckBox cbAtivarSrv;
-    
-    @FXML
-    private CheckBox cbCripto;
 
     @FXML
     private TextField tfIpSrv;
-    
-
-    @FXML
-    private TextField tfChave;
 
     @FXML
     private Label lblStatusSrv;
@@ -79,11 +72,6 @@ public class ControllerServidor implements Initializable{
 		} catch (MalformedURLException e) {
 			taLogSrv.setText("Erro: "+e.toString());
 		}
-    }
-	
-    @FXML
-    void ativarCriptografia(ActionEvent event) {
-    	tfChave.setDisable(false);
     }
 	
 	@FXML
