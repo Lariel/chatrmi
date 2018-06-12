@@ -12,7 +12,9 @@ import cliente.IChatCliente;
 import servidorGui.ModelServidor;
 import servidorGui.ControllerServidor;
 
-public class ChatServidor extends UnicastRemoteObject implements IChatServidor{
+public class ChatServidor implements IChatServidor{
+//public class ChatServidor extends UnicastRemoteObject implements IChatServidor{	
+
 	private static final long serialVersionUID = 1L;
 	private ArrayList<IChatCliente>registradosNoServidor; // lista compartilhada com todos conectados no servidor
 	//private ArrayList<IChatCliente>contatos;

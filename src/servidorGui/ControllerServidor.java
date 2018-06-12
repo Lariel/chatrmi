@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import servidor.ChatServidor;
+import servidor.IChatServidor;
 
 public class ControllerServidor implements Initializable{
 	ChatServidor servidor;
@@ -63,7 +67,27 @@ public class ControllerServidor implements Initializable{
 	
 	@FXML
     void ativarServidor(ActionEvent event) {
-		try {
+		
+        try {
+    		//rmiregistry
+    		Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+    		
+    		//instancia novo servidor
+    		servidor=new ChatServidor(tfIpSrv.getText(),modelServidor);
+    		
+    		IChatServidor iServidor = (IChatServidor) UnicastRemoteObject.exportObject(servidor, 0);
+    		
+            registry.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI",servidor);
+            
+            lblStatusSrv.setText("Servidor IP "+servidor.getIpServidor()+" online");
+        	
+        }catch (RemoteException e) {
+        	taLogSrv.setText("Erro: "+e.toString());
+		}
+        
+        /*
+         
+         try {
 			Naming.rebind("//"+tfIpSrv.getText()+"/ServidorChatRMI", servidor=new ChatServidor(tfIpSrv.getText(),modelServidor));
 			lblStatusSrv.setText("Servidor IP "+servidor.getIpServidor()+" online");
 			
@@ -72,6 +96,10 @@ public class ControllerServidor implements Initializable{
 		} catch (MalformedURLException e) {
 			taLogSrv.setText("Erro: "+e.toString());
 		}
+         
+         
+         */
+	
     }
 	
 	@FXML

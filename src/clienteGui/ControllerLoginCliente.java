@@ -6,6 +6,8 @@ import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.util.ResourceBundle;
 
@@ -26,6 +28,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import servidor.ChatServidor;
 import servidor.IChatServidor;
 
 public class ControllerLoginCliente implements Initializable{
@@ -79,6 +82,29 @@ public class ControllerLoginCliente implements Initializable{
 			int i = tfUser.getText().indexOf("@");
 			ipCliente=tfUser.getText().substring(0,i);
 			ipServidor=tfUser.getText().substring(i+1);
+			
+			    
+			try {
+				Registry registry = LocateRegistry.getRegistry("rmi://"+ipServidor+"/ServidorChatRMI",Registry.REGISTRY_PORT);
+				IChatServidor iServidor = (IChatServidor) registry.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
+				
+				cliente = new ChatCliente(nickCliente,iServidor,ipCliente,modelCliente);
+				
+				Stage primStage = (Stage) tfNick.getScene().getWindow();
+				primStage.setTitle("WhatsLike - "+tfNick.getText());
+
+				//abre tela principal
+				chamaTelaPrincipal();
+
+				tfChaveCliente.clear();
+				tfNick.clear();
+				tfUser.clear();
+				
+			} catch (ServerNotActiveException | MalformedURLException | RemoteException | NotBoundException e) {
+				e.printStackTrace();
+			}
+			
+			/*
 
 			try {
 				IChatServidor servidor = (IChatServidor) Naming.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
@@ -108,6 +134,8 @@ public class ControllerLoginCliente implements Initializable{
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/WhatsLike.png")));
 				alert.showAndWait();
 			}
+			
+			*/
 
 		}else {
 			tfUser.clear();
