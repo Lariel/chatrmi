@@ -85,8 +85,10 @@ public class ControllerLoginCliente implements Initializable{
 			
 			    
 			try {
-				Registry registry = LocateRegistry.getRegistry("rmi://"+ipServidor+"/ServidorChatRMI",Registry.REGISTRY_PORT);
-				IChatServidor iServidor = (IChatServidor) registry.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
+				//Registry registry = LocateRegistry.getRegistry("rmi://"+ipServidor+"/ServidorChatRMI",Registry.REGISTRY_PORT);
+				//IChatServidor iServidor = (IChatServidor) registry.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
+				
+				IChatServidor iServidor = (IChatServidor) Naming.lookup("rmi://"+ipServidor+"/ServidorChatRMI");
 				
 				cliente = new ChatCliente(nickCliente,iServidor,ipCliente,modelCliente);
 				

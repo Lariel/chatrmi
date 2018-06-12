@@ -70,7 +70,7 @@ public class ControllerServidor implements Initializable{
 		
         try {
     		//rmiregistry
-    		Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+    		Registry registry = LocateRegistry.createRegistry(1099);
     		
     		//instancia novo servidor
     		servidor=new ChatServidor(tfIpSrv.getText(),modelServidor);

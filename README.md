@@ -5,20 +5,13 @@
 Criar .java.policy com o seguinte conteúdo e salvar na /home (linux):
 
 > grant {
->
 >		permission java.security.AllPermission;
->
 > };
 
 ###### Compilar dentro da SRC: 
 	javac clienteGui/*java
 	javac servidorGui/*java
-  
-
-###### Ativar o rmiregistry
-	rmiregistry &   //ativa e retorna o PID*
-  
-  
+   
 ###### Executar em terminais distindos
 
 	java servidorGui.Main 
