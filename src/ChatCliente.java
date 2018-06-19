@@ -23,6 +23,9 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	}
 	
 	public boolean receberMensagem(Mensagem m) throws RemoteException {
+		//AES Decipher
+		
+		
 		System.out.println(
 				"\n "+
 				m.getNomeRemetente()+" - "+
@@ -47,7 +50,7 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	public void run() {
 		Scanner sc = new Scanner(System.in);
 		String op="";
-		String mensagem, texto, destinatario, nomeGrupo;
+		String mensagem, mensagemAES, texto, destinatario, nomeGrupo;
 		System.out.println("\n----- Bem vindo "+nome +", comandos disponíveis:\n"
 					+"# i <nome> <ip> - Insere o <ip> com o <nome> na lista de contatos. \n"
 					+"# g @<nome> <lista-nomes> - Add o @<nome> na lista de grupos <lista-nomes> como membros do grupo.\n"
@@ -117,6 +120,8 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 			case "s":
 				destinatario=comandos[2];
 				mensagem=texto.substring(texto.indexOf(comandos[3]));
+				// mensagemAES Cipher
+				
 				Mensagem m=new Mensagem(this, mensagem); //obj Mensagem recebe o Obj do remetente e uma String com a mensagem
 				//destinatario da mensagem é identificado abaixo
 				if(destinatario.startsWith("@")) { // mensagem para o grupo todo
