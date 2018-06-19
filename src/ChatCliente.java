@@ -7,10 +7,14 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.crypto.spec.SecretKeySpec;
+
 public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Runnable{
 	private static final long serialVersionUID = 1L;
 	private IChatServidor servidor;
-	private String nome, IP=null;
+	private String nome;
+	private String IP=null;
+	private String key="password";
 	private boolean onLine=false;
 	private String[] comandos;
 	
@@ -24,7 +28,16 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 	
 	public boolean receberMensagem(Mensagem m) throws RemoteException {
 		//AES Decipher
-		
+		/*
+		String mensagemDecipher = "";
+		try {
+			AESCipher dcpr = new AESCipher(key, m.getTexto());
+			mensagemDecipher = dcpr.getTexto();
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		*/
 		
 		System.out.println(
 				"\n "+
@@ -120,24 +133,36 @@ public class ChatCliente extends UnicastRemoteObject implements IChatCliente, Ru
 			case "s":
 				destinatario=comandos[2];
 				mensagem=texto.substring(texto.indexOf(comandos[3]));
+
 				// mensagemAES Cipher
-				
-				Mensagem m=new Mensagem(this, mensagem); //obj Mensagem recebe o Obj do remetente e uma String com a mensagem
-				//destinatario da mensagem é identificado abaixo
-				if(destinatario.startsWith("@")) { // mensagem para o grupo todo
-					try {
-						servidor.enviarMensagemGrupo(m, destinatario);
-					} catch (RemoteException | ServerNotActiveException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} //método enviarMensagem recebendo a mensagem e o nome do grupo
-				}else { // mensagem para 1 contato
-					try {
-						System.out.println(servidor.enviarMensagem(m, destinatario)); //método enviarMensagem recebendo a mensagem e o destinatário
-					} catch (RemoteException | ServerNotActiveException e3){
-						e3.printStackTrace();
+				//String mensagemCipher = "";
+				try {
+					//AESCipher cpr = new AESCipher(key, mensagem);
+					//mensagemCipher = cpr.getTexto();
+					
+					Mensagem m=new Mensagem(this, mensagem); //obj Mensagem recebe o Obj do remetente e uma String com a mensagem
+					//destinatario da mensagem é identificado abaixo
+					if(destinatario.startsWith("@")) { // mensagem para o grupo todo
+						try {
+							servidor.enviarMensagemGrupo(m, destinatario);
+						} catch (RemoteException | ServerNotActiveException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} //método enviarMensagem recebendo a mensagem e o nome do grupo
+					}else { // mensagem para 1 contato
+						try {
+							System.out.println(servidor.enviarMensagem(m, destinatario)); //método enviarMensagem recebendo a mensagem e o destinatário
+						} catch (RemoteException | ServerNotActiveException e3){
+							e3.printStackTrace();
+						}
 					}
+					
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
 				}
+				
+				
 			break;
 			
 			case "c":
